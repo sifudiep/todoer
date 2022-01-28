@@ -1,0 +1,58 @@
+html{
+	height: 100%;
+}
+
+body{
+	background-color: rgb(225, 225, 225);
+	min-height: 100%;
+}
+
+#entire-page{
+	max-width: 800px;
+	margin: 0 auto;
+}
+
+main{
+	padding: 8px;
+}
+
+.home {
+	display: grid;
+	grid-template: 
+	"title add-todo"
+}
+
+.home-title {
+	grid-area: title;
+}
+
+.home-add-todo {
+	grid-area: add-todo;
+	justify-self: flex-end;
+	align-self: center;
+}
+
+
+.todo-item {
+	display: grid;
+	grid-template:
+	"title done"
+	"description done"
+}
+
+.todo-title {
+	grid-area: title;
+}
+
+.todo-done {
+	grid-area: done;
+	justify-self: flex-end;
+}
+
+.todo-description {
+	grid-area: description;
+}
+
+.align-self-center {
+	align-self: center;
+}

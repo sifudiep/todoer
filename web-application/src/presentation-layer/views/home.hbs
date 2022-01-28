@@ -1,0 +1,14 @@
+<div class="home">
+    <p class="is-size-2 home-title">Today<span class="is-size-6">  Thu 27 Jan</span></p>
+    <button class="button is-warning home-add-todo"><p class="is-size-4">+ Todo</p></button>
+</div>
+
+{{#each todos}}
+    <div class="box">
+        <div class="todo-item">
+            <p class="is-size-4 todo-title">{{this.title}}</p>
+            <p class="is-size-7 todo-description">{{this.description}}</p>
+            <button class="button is-success is-light todo-done">Done</button>
+        </div>
+    </div>
+{{/each}}
