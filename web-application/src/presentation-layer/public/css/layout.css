@@ -56,3 +56,17 @@ main{
 .align-self-center {
 	align-self: center;
 }
+
+#login-button {
+	width: 150px;
+}
+
+#login-button-container {
+	display: flex;
+	justify-content: center;
+	margin-top: 10px;
+}
+
+.margin-bottom-10 {
+	margin-bottom: 10px;
+}

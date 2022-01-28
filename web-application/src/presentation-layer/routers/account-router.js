@@ -3,34 +3,38 @@ const accountManager = require('../../business-logic-layer/account-manager')
 
 const router = express.Router()
 
-router.get("/sign-up", function(request, response){
-	response.render("accounts-sign-up.hbs")
+router.get("/sign-up", (req, res) => {
+	res.render("accounts-sign-up.hbs")
 })
 
-router.get("/sign-in", function(request, response){
-	response.render("accounts-sign-in.hbs")
+router.get("/sign-in", (req, res) => {
+	res.render("accounts-sign-in.hbs")
 })
 
-router.get("/", function(request, response){
-	accountManager.getAllAccounts(function(errors, accounts){
+router.post("/sign-in", (req, res) => {
+	console.log(req.body);
+})
+
+router.get("/", (req, res) => {
+	accountManager.getAllAccounts((err, accounts) => {
 		const model = {
 			errors: errors,
 			accounts: accounts
 		}
-		response.render("accounts-list-all.hbs", model)
+		res.render("accounts-list-all.hbs", model)
 	})
 })
 
-router.get('/:username', function(request, response){
+router.get('/:username', (req, res) => {
 	
-	const username = request.params.username
+	const username = req.params.username
 	
-	accountManager.getAccountByUsername(username, function(errors, account){
+	accountManager.getAccountByUsername(username, (err, account) => {
 		const model = {
 			errors: errors,
 			account: account
 		}
-		response.render("accounts-show-one.hbs", model)
+		res.render("accounts-show-one.hbs", model)
 	})
 	
 })

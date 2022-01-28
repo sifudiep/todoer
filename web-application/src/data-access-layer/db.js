@@ -7,4 +7,5 @@ const connection = mysql.createConnection({
 	database : 'webAppDatabase'
 })
 
+
 module.exports = connection

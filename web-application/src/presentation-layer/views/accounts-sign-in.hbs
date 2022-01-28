@@ -3,8 +3,11 @@
 	<p>Sign in using the form below.</p>
 </div>
 
-<form action="">
+<form method="POST" action="sign-in">
 	
-	TODO
-	
+	<input type="email" class="input is-large" placeholder="Email" name="email" required="required" pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,14}$">
+	<input type="password" class="input is-large" placeholder="Password" name="password" required="required">
+	<div id="login-button-container">
+		<button class="button is-warning" id="login-button">Sign In!</button>
+	</div>
 </form>

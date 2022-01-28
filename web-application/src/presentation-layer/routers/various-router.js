@@ -2,7 +2,7 @@ const express = require('express')
 
 const router = express.Router()
 
-router.get("/", function(request, response){
+router.get("/", (req, res) => {
 	let todos = [
 		{
 			title: "this is the title....",
@@ -17,17 +17,17 @@ router.get("/", function(request, response){
 		}
 	]
 
-	response.render("home.hbs", {
+	res.render("home.hbs", {
 		todos
 	})
 })
 
-router.get("/about", function(request, response){
-	response.render("about.hbs")
+router.get("/about", (req, res) => {
+	res.render("about.hbs")
 })
 
-router.get("/contact", function(request, response){
-	response.render("contact.hbs")
+router.get("/contact", (req, res) => {
+	res.render("contact.hbs")
 })
 
 module.exports = router

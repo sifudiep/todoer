@@ -7,6 +7,28 @@ const accountRouter = require('./routers/account-router')
 
 const app = express()
 
+// Adds body to req
+app.use(express.urlencoded({
+    extended: false
+}));
+
+// Boilerplate for redis
+const { createClient } = require('redis')
+const session = require('express-session')
+
+let RedisStore = require('connect-redis')(session)
+let redisClient = createClient()
+
+app.use(
+  session({
+    store: new RedisStore({ client: redisClient }),
+    saveUninitialized: false,
+    secret: 'anAmazingSecretIndeed',
+    resave: false,
+  })
+)
+// End of redis boilerplate
+
 app.engine('hbs', expressHandlebars.engine({
     defaultLayout: 'main.hbs'
 }))
