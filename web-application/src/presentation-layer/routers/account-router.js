@@ -1,18 +1,27 @@
 const express = require('express')
 const accountManager = require('../../business-logic-layer/account-manager')
+const bcrypt = require('bcryptjs')
 
 const router = express.Router()
-
-router.get("/sign-up", (req, res) => {
-	res.render("accounts-sign-up.hbs")
-})
 
 router.get("/sign-in", (req, res) => {
 	res.render("accounts-sign-in.hbs")
 })
 
-router.post("/sign-in", (req, res) => {
-	console.log(req.body);
+router.post("/sign-in", async (req, res) => {
+	accountManager.getAccountByEmail(req.body.email, (err, account) => {
+		if (account) {
+			bcrypt.compare(req.body.password, account.hashedPassword, (err, res) => {
+				if (res) {
+					console.log(`success!`);
+					// logged into account!
+				} else {
+					console.log(`failure! `);
+				}
+			})
+
+		}
+	})
 })
 
 router.get("/", (req, res) => {
@@ -29,7 +38,7 @@ router.get('/:username', (req, res) => {
 	
 	const username = req.params.username
 	
-	accountManager.getAccountByUsername(username, (err, account) => {
+	accountManager.getAccountByEmail(username, (err, account) => {
 		const model = {
 			errors: errors,
 			account: account
