@@ -1,4 +1,5 @@
 const db = require('./db')
+const bcrypt = require('bcryptjs')
 
 /*
 	Retrieves all accounts ordered by email.
@@ -34,8 +35,35 @@ exports.getAccountByEmail = function(email, callback){
 		if(error){
 			callback(['databaseError'], null)
 		}else{
-			callback([], accounts[0])
+			callback(null, accounts[0])
 		}
 	})
 	
+}
+
+/*
+	Find user with matching email and password.
+	Possible errors: Incorrect email or password.
+	Success value: True if both email and password matches.
+*/
+exports.attemptSignIn = function(email, password, callback) {
+	this.getAccountByEmail(email, (err, account) => {
+		if (err) {
+            console.log(err);
+        }
+		if (account) {
+			bcrypt.compare(password, account.hashedPassword, (err, loginSuccess) => {
+				if (err) {
+					console.error(err)
+					callback(err, null)
+				}
+
+				if (loginSuccess) {
+					callback(null, true)
+				} else {
+					callback(null, false)
+				}
+			})
+		}		
+	})
 }

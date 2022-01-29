@@ -1,10 +1,16 @@
 -- Create a table to store user accounts in.
 CREATE TABLE accounts (
 	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-	username VARCHAR(50) NOT NULL,
-	password VARCHAR(30) NOT NULL,
-	CONSTRAINT usernameUnique UNIQUE (username)
+	email VARCHAR(50) NOT NULL,
+	hashedPassword VARCHAR(80) NOT NULL,
+	CONSTRAINT emailUnique UNIQUE (email)
+);
+
+CREATE TABLE todo (
+	id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+	title VARCHAR(50) NOT NULL,
+	description VARCHAR(100)
 );
 
 -- Create a dummy account for testing.
-INSERT INTO accounts (username, password) VALUES ("Alice", "abc123");
+INSERT INTO accounts (email, hashedPassword) VALUES ("mikael.diep@gmail.com", "$2a$10$k6MLSu1uYauHL8IWIihysOTXUb6g/4IaAVHhZ/8KFYK90TBiUCz9G");

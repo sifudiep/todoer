@@ -8,3 +8,7 @@ exports.getAllAccounts = function(callback){
 exports.getAccountByEmail = function(email, callback){
 	accountRepository.getAccountByEmail(email, callback)
 }
+
+exports.attemptSignIn = function(email, password, callback) {
+	accountRepository.attemptSignIn(email, password, callback)
+}

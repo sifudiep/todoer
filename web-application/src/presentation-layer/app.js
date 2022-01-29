@@ -2,37 +2,39 @@ const path = require('path')
 const express = require('express')
 const expressHandlebars = require('express-handlebars')
 
+const COOKIE_MILLISECONDS_LIFESPAN = 1000 * 60 * 60
+
 const variousRouter = require('./routers/various-router')
 const accountRouter = require('./routers/account-router')
 
 const app = express()
 
+
+const session = require('express-session')
+let RedisStore = require('connect-redis')(session)
+
+const Redis = require("ioredis");
+const ioredis = new Redis(6379, "redis-server"); // uses defaults unless given configuration object
+
+ioredis.set("foo", "bar")
+
+app.use(
+    session({
+        store: new RedisStore({ client: ioredis}),
+        saveUninitialized: false,
+        secret: 'aSecreetKey',
+        resave: false
+    })
+)
+
 // Adds body to req
 app.use(express.urlencoded({
     extended: false
-}));
-
-// Boilerplate for redis
-const { createClient } = require('redis')
-const session = require('express-session')
-
-let RedisStore = require('connect-redis')(session)
-let redisClient = createClient()
-
-app.use(
-  session({
-    store: new RedisStore({ client: redisClient }),
-    saveUninitialized: false,
-    secret: 'anAmazingSecretIndeed',
-    resave: false,
-  })
-)
-// End of redis boilerplate
+}))
 
 app.engine('hbs', expressHandlebars.engine({
     defaultLayout: 'main.hbs'
 }))
-
 
 // Setup express-handlebars.
 app.set('views', path.join(__dirname, 'views'))
@@ -44,7 +46,24 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use('/', variousRouter)
 app.use('/accounts', accountRouter)
 
+// Middleware that blocks all unauthorized requests AFTER this code.
+// app.use((req, res, next) => {
+//     if (!req.session || !req.session.authorized) {
+//         const err = new Error("You are not authorized!")
+//         err.statuscode = 401
+//         next(err)
+//     }
+
+//     next()
+// })
+
+
 // Start listening for incoming HTTP requests!
-app.listen(8080, function(){
-	console.log('Running on 8080!')
+app.listen(8080, function () {
+    console.log('Running on 8080!')
 })
+
+
+
+
+
