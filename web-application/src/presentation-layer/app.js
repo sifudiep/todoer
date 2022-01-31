@@ -16,14 +16,17 @@ let RedisStore = require('connect-redis')(session)
 const Redis = require("ioredis");
 const ioredis = new Redis(6379, "redis-server"); // uses defaults unless given configuration object
 
-ioredis.set("foo", "bar")
-
 app.use(
     session({
         store: new RedisStore({ client: ioredis}),
         saveUninitialized: false,
         secret: 'aSecreetKey',
-        resave: false
+        resave: false,
+        cookie: {
+            secure: false, // TODO : Change to TRUE during production
+            httpOnly: true,
+            maxAge: COOKIE_MILLISECONDS_LIFESPAN
+        }
     })
 )
 

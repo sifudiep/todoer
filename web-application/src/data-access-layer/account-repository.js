@@ -59,11 +59,38 @@ exports.attemptSignIn = function(email, password, callback) {
 				}
 
 				if (loginSuccess) {
-					callback(null, true)
+					callback(null, {didSignIn: true, accId: account.id})
 				} else {
-					callback(null, false)
+					callback("PASSWORD IS INCORRECT", false)
 				}
 			})
-		}		
+		} else {
+            callback("EMAIL DOES NOT EXIST", false)
+        }
+	})
+}
+
+/*
+	Find user with matching email and password.
+	Possible errors: Incorrect email or password.
+	Success value: True if both email and password matches.
+*/
+exports.addTodo = function(title, description, accId, callback) {
+    const query = `INSERT INTO todos (title, description, accId) VALUES (?, ?, ?)`
+
+	const values = [title, description, accId]
+
+    console.log(`got to addTodo`);
+
+	db.query(query, values, function(error, result){
+        console.log(`result : `);
+        console.log(result);
+
+		if(error){
+			console.log("ERROR!");
+            console.log(error);
+		}
+
+
 	})
 }

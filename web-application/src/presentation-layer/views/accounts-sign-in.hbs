@@ -1,13 +1,23 @@
 <div class="content">
-	<h2>Sign in</h2>
-	<p>Sign in using the form below.</p>
+    <h2>Sign in</h2>
+    <p>Sign in using the form below.</p>
+    {{#if error}}
+    <article class="message is-danger">
+        <div class="message-body">
+            {{error}}
+        </div>
+    </article>
+    {{/if}}
 </div>
 
 <form method="POST" action="sign-in">
-	
-	<input type="email" class="input is-large" placeholder="Email" name="email" required="required" pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,14}$">
-	<input type="password" class="input is-large" placeholder="Password" name="password" required="required">
-	<div id="login-button-container">
-		<button class="button is-warning" id="login-button">Sign In!</button>
-	</div>
+
+    <input type="email" class="input is-large" placeholder="Email" name="email" required="required"
+        pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,14}$">
+    <input type="password" class="input is-large" placeholder="Password" name="password" required="required">
+    <div id="login-button-container">
+        <button class="button is-warning" id="login-button">Sign In!</button>
+    </div>
+
+
 </form>

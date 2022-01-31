@@ -8,48 +8,28 @@ router.get("/sign-in", (req, res) => {
 })
 
 router.post("/sign-in", (req, res) => {
-	accountManager.attemptSignIn(req.body.email, req.body.password, (err, didSignIn) => {
+	accountManager.attemptSignIn(req.body.email, req.body.password, (err, result) => {
 		if (err) {
             console.log(`ERR:`);
             console.log(err)
         }
-		console.log(`didSignIn: ${didSignIn}`);
 
-		if (didSignIn) {
+		if (result.didSignIn) {
 			req.session.isAuth = true
+            req.session.accId = result.accId
 			console.log(req.sessionID);
             res.render("home.hbs")
             return
-
 		}
 
-        res.render("accounts-sign-in.hbs")
+        res.render("accounts-sign-in.hbs", {error : "Incorrect email or password..."})
 	})
 })
 
-router.get("/", (req, res) => {
-	accountManager.getAllAccounts((err, accounts) => {
-		const model = {
-			err: err,
-			accounts: accounts
-		}
+router.post("/add-todo", (req, res) => {
+    accountManager.addTodo(req.body.title, req.body.description, req.session.accId)
 
-		res.render("accounts-list-all.hbs", model)
-	})
-})
-
-router.get('/:username', (req, res) => {
-	
-	const username = req.params.username
-	
-	accountManager.getAccountByEmail(username, (err, account) => {
-		const model = {
-			err: err,
-			account: account
-		}
-		res.render("accounts-show-one.hbs", model)
-	})
-	
+    res.redirect("localhost:8000")
 })
 
 module.exports = router
