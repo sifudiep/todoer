@@ -71,19 +71,17 @@ exports.attemptSignIn = function(email, password, callback) {
 }
 
 /*
-	Find user with matching email and password.
-	Possible errors: Incorrect email or password.
-	Success value: True if both email and password matches.
+	Adds todo item to database table todos.
+	Possible errors: Title is null or non-unique. If user is not authenticated.
+	Success value: If title is neither null nor non-unique and user is logged in with accId in his session.
 */
 exports.addTodo = function(title, description, accId, callback) {
     const query = `INSERT INTO todos (title, description, accId) VALUES (?, ?, ?)`
 
 	const values = [title, description, accId]
 
-    console.log(`got to addTodo`);
-
 	db.query(query, values, function(error, result){
-        console.log(`result : `);
+        console.log(`result addTodo: `);
         console.log(result);
 
 		if(error){
@@ -92,5 +90,23 @@ exports.addTodo = function(title, description, accId, callback) {
 		}
 
 
+	})
+}
+
+exports.getAllTodos = function(accId, callback) {
+    const query = "SELECT * from todos WHERE accId = ?"
+
+    const values = [accId]
+
+	db.query(query, values, function(error, result){
+		if(error){
+			console.log("ERROR!");
+            console.log(error);
+		}
+        
+        if (result) {
+            callback(null, result)
+        }
+        
 	})
 }

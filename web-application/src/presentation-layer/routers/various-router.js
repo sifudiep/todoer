@@ -1,25 +1,16 @@
 const express = require('express')
+const accountManager = require('../../business-logic-layer/account-manager')
 
 const router = express.Router()
 
 router.get("/", (req, res) => {
-	let todos = [
-		{
-			title: "this is the title....",
-			description: "this is the description..."
-		},
-		{
-			title: "do the laundry",
-			description: "just do it man..."
-		},
-		{
-			title: "do the laundry"
-		}
-	]
+    accountManager.getAllTodos(req.session.accId, (err, todos) => {
+        res.render("home.hbs", {
+            todos
+        })
+    })
 
-	res.render("home.hbs", {
-		todos
-	})
+	
 })
 
 router.get("/about", (req, res) => {
@@ -29,8 +20,6 @@ router.get("/about", (req, res) => {
 router.get("/contact", (req, res) => {
 	res.render("contact.hbs")
 })
-
-
 
 
 module.exports = router

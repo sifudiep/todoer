@@ -16,3 +16,7 @@ exports.attemptSignIn = function(email, password, callback) {
 exports.addTodo = function(title, description, accId, callback) {
     accountRepository.addTodo(title, description, accId, callback)
 }
+
+exports.getAllTodos = function(accId, callback) {
+    accountRepository.getAllTodos(accId, callback)
+}
