@@ -1,6 +1,12 @@
 const ESCAPE_KEY_CODE = 27 
+const HOME_URL = "http://localhost:8000/"
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Redirects user back to HOME_URL, band aid fix for POST form default redirecting behaviour.
+    if (location != HOME_URL) {
+        location.assign(HOME_URL)
+    }
+
     function openModal(el) {
         el.classList.add('is-active');
     }

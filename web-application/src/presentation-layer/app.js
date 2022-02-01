@@ -4,11 +4,25 @@ const expressHandlebars = require('express-handlebars')
 
 const COOKIE_MILLISECONDS_LIFESPAN = 1000 * 60 * 60
 
-const variousRouter = require('./routers/various-router')
+
+const awilix = require('awilix')
+
+const accountRepository = require("../data-access-layer/account-repository")
+const accountManager = require("../business-logic-layer/account-manager")
 const accountRouter = require('./routers/account-router')
+const variousRouter = require('./routers/various-router')
+
+const container = awilix.createContainer()
+
+container.register("accountRepository", awilix.asFunction(accountRepository))
+container.register("accountManager", awilix.asFunction(accountManager))
+container.register("accountRouter", awilix.asFunction(accountRouter))
+container.register("variousRouter", awilix.asFunction(variousRouter))
+
+const theAccountRouter = container.resolve("accountRouter")
+const theVariousRouter = container.resolve("variousRouter")
 
 const app = express()
-
 
 const session = require('express-session')
 let RedisStore = require('connect-redis')(session)
@@ -23,7 +37,7 @@ app.use(
         secret: 'aSecreetKey',
         resave: false,
         cookie: {
-            secure: false, // TODO : Change to TRUE during production
+            secure: true, // TODO : Change to TRUE during production
             httpOnly: true,
             maxAge: COOKIE_MILLISECONDS_LIFESPAN
         }
@@ -46,8 +60,8 @@ app.set('views', path.join(__dirname, 'views'))
 app.use(express.static(path.join(__dirname, 'public')))
 
 // Attach all routers.
-app.use('/', variousRouter)
-app.use('/accounts', accountRouter)
+app.use('/', theVariousRouter)
+app.use('/accounts', theAccountRouter)
 
 // Middleware that blocks all unauthorized requests AFTER this code.
 // app.use((req, res, next) => {
