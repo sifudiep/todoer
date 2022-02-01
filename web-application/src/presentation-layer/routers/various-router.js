@@ -1,10 +1,10 @@
 const express = require('express')
 
-module.exports = function({accountManager}) {
+module.exports = function({todoManager}) {
     const router = express.Router()
 
     router.get("/", (req, res) => {
-        accountManager.getAllTodos(req.session.accId, (err, todos) => {
+        todoManager.getAllTodos(req.session.accId, (err, todos) => {
             res.render("home.hbs", {
                 todos
             })

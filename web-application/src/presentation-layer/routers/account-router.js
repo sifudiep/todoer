@@ -26,15 +26,6 @@ module.exports = function ({ accountManager }) {
         })
     })
 
-    router.post("/add-todo", (req, res) => {
-        accountManager.addTodo(req.body.title, req.body.description, req.session.accId)
-
-        res.render("home.hbs")
-    })
-
-    router.get("/add-todo", (req, res) => {
-        console.log(`GET add-todo`);
-    })
 
     return router
 }

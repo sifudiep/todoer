@@ -8,12 +8,6 @@ module.exports = function({accountRepository}) {
         },
         attemptSignIn: function(email, password, callback) {
             accountRepository.attemptSignIn(email, password, callback)
-        },
-        addTodo: function(title, description, accId, callback) {
-            accountRepository.addTodo(title, description, accId, callback)
-        },
-        getAllTodos: function(accId, callback) {
-            accountRepository.getAllTodos(accId, callback)
-        },
+        }
     }
 }
