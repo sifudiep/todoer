@@ -2,6 +2,8 @@ const path = require("path")
 const express = require("express")
 const expressHandlebars = require("express-handlebars")
 
+const COOKIE_MILLISECONDS_LIFESPAN = 1000 * 60 * 60
+
 const awilix = require("awilix")
 
 const accountRepository = require("../data-access-layer/account-repository")
@@ -38,11 +40,12 @@ app.use(
     session({
         store: new RedisStore({ client: ioredis}),
         saveUninitialized: false,
-        secret: "aSecreetKey",
+        secret: 'aSecreetKey',
         resave: false,
         cookie: {
-            secure: true,
-            httpOnly: true
+            secure: false, // TODO : Change to TRUE during production
+            httpOnly: true,
+            maxAge: COOKIE_MILLISECONDS_LIFESPAN
         }
     })
 )
@@ -80,11 +83,10 @@ app.use("/todo", theTodoRouter)
 
 
 // Start listening for incoming HTTP requests!
-app.listen(8080, function () {
-    console.log("Running on 8080!")
-})
+// app.listen(8080, function () {
+//     console.log("Running on 8080!")
+// })
 
-
-
+module.exports = app
 
 

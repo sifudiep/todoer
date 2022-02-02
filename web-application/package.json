@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon --inspect=0.0.0.0 src/presentation-layer/app.js"
+    "start": "nodemon --inspect=0.0.0.0 src/app.js"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +17,7 @@
     "express-handlebars": "^6.0.2",
     "express-session": "^1.17.2",
     "ioredis": "^4.28.3",
+    "jsonwebtoken": "^8.5.1",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.7"
   }

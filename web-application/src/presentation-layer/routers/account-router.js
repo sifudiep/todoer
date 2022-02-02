@@ -17,7 +17,6 @@ module.exports = function ({ accountManager }) {
             if (result.didSignIn) {
                 req.session.isAuth = true
                 req.session.accId = result.accId
-                console.log(req.sessionID);
                 res.render("home.hbs")
                 return
             }

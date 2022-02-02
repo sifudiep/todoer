@@ -1,4 +1,5 @@
 const express = require('express')
+const { Cookie } = require('express-session')
 
 module.exports = function({todoManager}) {
     const router = express.Router()
@@ -11,7 +12,7 @@ module.exports = function({todoManager}) {
         })
     })
     
-    router.get("/about", (req, res) => {
+    router.get("/about", (req, res) => {        
         res.render("about.hbs")
     })
     
