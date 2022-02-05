@@ -1,3 +1,4 @@
 1. Be able to view resources
 2. Add authorization to routes
 3. Make app usable without logging in, todos are stored in session.
+4. CHECK TUTORIAL ON REST API FOR CONNECT ID TOKEN

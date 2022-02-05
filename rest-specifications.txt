@@ -1,0 +1,1 @@
+1. Authorization Header with "Bearer {TOKEN}" must be used.
