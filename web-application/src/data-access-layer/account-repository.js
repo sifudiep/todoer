@@ -42,7 +42,6 @@ module.exports = function({}) {
                             console.error(err)
                             callback(err, null)
                         }
-        
                         if (loginSuccess) {
                             callback(null, {didSignIn: true, accId: account.id})
                         } else {
