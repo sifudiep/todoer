@@ -1,6 +1,14 @@
 window.addEventListener('DOMContentLoaded', (e) => {
     const main = document.querySelector("main")
-    generateSignInPage()
+
+    let todos = [
+        {title: "This is dummy", description: "data"},
+        {title: "This is wat"},
+        {title: "This is ddt", description: "eee"},
+
+    ]
+
+    generateTodoPage()
 
     const usernameInput = document.querySelector("input#email")
     const passwordInput = document.querySelector("input#password")
@@ -49,6 +57,8 @@ window.addEventListener('DOMContentLoaded', (e) => {
     }
 
     function generateSignInPage() {
+        
+        console.log(`Generating Sign in...`);
         // Text Section
         let divContent = document.createElement("div")
         divContent.className = "content"
@@ -84,6 +94,7 @@ window.addEventListener('DOMContentLoaded', (e) => {
 
         let loginButton = document.createElement("button")
         loginButton.className = "button is-warning"
+        loginButton.type = "password"
         loginButton.id = "login-button"
         loginButton.textContent = "Sign In!"
 
@@ -96,6 +107,202 @@ window.addEventListener('DOMContentLoaded', (e) => {
         })
     }
 
+    function generateTodoPage() {
+        // Header + Add Todo Button Section
+        const divHome = document.createElement("div")
+        divHome.className = "home"
+
+        const homeHeader = document.createElement("p")
+        homeHeader.className = "is-size-2 home-title"
+        homeHeader.textContent = "Today"
+
+        const homeSubheader = document.createElement("span")
+        homeSubheader.className = "is-size-6"
+        homeSubheader.textContent = " Mon 31 Jan"
+
+        homeHeader.appendChild(homeSubheader)
+
+        const addTodoButton = document.createElement("button")
+        addTodoButton.className = "button is-warning home-add-todo js-modal-trigger"
+        addTodoButton.dataset.target = "modal-add-todo"
+
+        const addTodoButtonP = document.createElement("p")
+        addTodoButtonP.className = "is-size-4"
+        addTodoButtonP.textContent = "+ Todo"
+
+        addTodoButton.appendChild(addTodoButtonP)
+        
+        divHome.appendChild(homeHeader)
+        divHome.appendChild(addTodoButton)
+
+        main.appendChild(divHome)
+
+
+        // All Todos
+        updateTodosView()
+
+        // MODAL SECTION
+        const modal = document.createElement("div")
+        modal.className = "modal"
+        modal.id = "modal-add-todo"
+
+        const modalBackground = document.createElement("div")
+        modalBackground.className = "modal-background"
+
+        const modalCard = document.createElement("div")
+        modalCard.className = "modal-card"
+
+        modal.appendChild(modalBackground)
+        modal.appendChild(modalCard)
+
+        const modalCardHead = document.createElement("header")
+        modalCardHead.className = "modal-card-head"
+
+        modalCard.appendChild(modalCardHead)
+
+        const modalCardTitle = document.createElement("p")
+        modalCardTitle.className = "modal-card-title"
+        modalCardTitle.textContent = "Add Todo!"
+
+        const deleteButton = document.createElement("button")
+        deleteButton.className = "delete"
+        deleteButton.ariaLabel = "close"
+
+        modalCardHead.appendChild(modalCardTitle)
+
+        modalCardHead.appendChild(deleteButton)
+
+        const modalCardBody = document.createElement("section")
+        modalCardBody.className = "modal-card-body"
+
+        modalCard.appendChild(modalCardBody)
+
+
+        // Title Field
+        const titleField = document.createElement("div")
+        titleField.className = "field"
+        const titleLabel = document.createElement("label")
+        titleLabel.className = "label"
+        titleLabel.textContent = "Title"
+        const titleControl = document.createElement("div")
+        titleControl.className = "control"
+        const titleInput = document.createElement("input")
+        titleInput.className = "input"
+        titleInput.placeholder = "Title"
+        titleInput.maxLength = "50"
+
+        titleField.appendChild(titleLabel)
+        titleField.appendChild(titleControl)
+        titleControl.appendChild(titleInput)
+        
+        // Description Field
+        const descriptionField = document.createElement("div")
+        descriptionField.className = "field"
+        const descriptionLabel = document.createElement("label")
+        descriptionLabel.className = "label"
+        descriptionLabel.textContent = "Description"
+        const descriptionControl = document.createElement("div")
+        descriptionControl.className = "control"
+        const descriptionInput = document.createElement("input")
+        descriptionInput.className = "input"
+        descriptionInput.placeholder = "Description"
+        descriptionInput.maxLength = "100"
+
+        descriptionField.appendChild(descriptionLabel)
+        descriptionField.appendChild(descriptionControl)
+        descriptionControl.appendChild(descriptionInput)
+
+        const modalAddTodoButton = document.createElement("button")
+        modalAddTodoButton.className = "button is-warning width-100"
+        modalAddTodoButton.id ="modal-add-todo-button"
+        modalAddTodoButton.textContent = "Add Todo"
+
+        modalCardBody.appendChild(titleField)
+        modalCardBody.appendChild(descriptionField)
+        modalCardBody.appendChild(modalAddTodoButton)
+
+
+        main.appendChild(modal)
+    }
+
+    function updateTodosView() {
+        const divContainer = document.querySelector("div.box")
+
+        if (divContainer) {
+            main.removeChild(divContianer)
+        }
+
+        for (let i = 0; i < todos.length; i++) {
+            const container = document.createElement("div")
+            container.className = "box"
+
+            const todoItem = document.createElement("div")
+            todoItem.className = "todo-item"
+            
+            const todoItemTitle = document.createElement("p")
+            todoItemTitle.className = "is-size-4 todo-title"
+            todoItemTitle.textContent = todos[i].title
+
+            const todoItemDescription = document.createElement("p")
+            todoItemDescription.className = "is-size-7 todo-description"
+            todoItemDescription.textContent = todos[i].description
+
+            const doneButton = document.createElement("button")
+            doneButton.className = "button is-success is-light todo-done"
+            doneButton.textContent = "Done"
+
+            todoItem.appendChild(todoItemTitle)
+            todoItem.appendChild(todoItemDescription)
+            todoItem.appendChild(doneButton)
+
+            container.appendChild(todoItem)
+
+            main.appendChild(container)
+        }
+    }
+
+    // MODAL boilerplate code from BULMA.
+    function openModal(el) {
+        el.classList.add('is-active');
+    }
+
+    function closeModal(el) {
+        el.classList.remove('is-active');
+    }
+
+    function closeAllModals() {
+        (document.querySelectorAll('.modal') || []).forEach((modal) => {
+            closeModal(modal);
+        });
+    }
+
+    // Add a click event on buttons to open a specific modal
+    (document.querySelectorAll('.js-modal-trigger') || []).forEach((trigger) => {
+        const modal = trigger.dataset.target;
+        const target = document.getElementById(modal);
+
+        trigger.addEventListener('click', () => {
+            openModal(target);
+        });
+    });
+
+    // Add a click event on various child elements to close the parent modal
+    (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach((close) => {
+        const target = close.closest('.modal');
+
+        close.addEventListener('click', () => {
+            closeModal(target);
+        });
+    });
+
+    // Add a keyboard event to close all modals
+    document.addEventListener('keydown', (event) => {
+        const e = event || window.event;
+
+        if (e.keyCode === ESCAPE_KEY_CODE) { // Escape key
+            closeAllModals();
+        }
+    });
 
 
 })
