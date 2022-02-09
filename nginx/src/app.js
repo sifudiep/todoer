@@ -263,7 +263,8 @@ window.addEventListener('DOMContentLoaded', (e) => {
         modalCardBody.appendChild(modalAddTodoButton)
 
 
-        main.appendChild(modal)
+        main.appendChild(modal);
+
 
         // Add a click event on buttons to open a specific modal
         (document.querySelectorAll('.js-modal-trigger') || []).forEach((trigger) => {
