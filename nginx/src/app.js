@@ -1,17 +1,39 @@
 window.addEventListener('DOMContentLoaded', (e) => {
+    const ESCAPE_KEY_CODE = 27
+    const CLASS_COLORED_BUTTON = "button is-warning width-100"
+    const CLASS_UNCOLORED_BUTTON = "button is-light width-100"
+    const PAGE_SIGNIN = "PAGE_SIGNIN"
+    const PAGE_TODO = "PAGE_TODO"
+
     let main = document.querySelector("main")
+    let todosPageButton = document.querySelector("#todosPageButton")
+    let signInPageButton = document.querySelector("#signInPageButton")
+    
+    let currentPage = ""
+
+    todosPageButton.addEventListener("click", (e) => {
+        generateTodoPage()
+    })
+
+    signInPageButton.addEventListener("click", (e) => {
+        if (currentPage != PAGE_SIGNIN) {
+            generateSignInPage()
+        }
+    })
 
     let todos = [
-        {title: "This is dummy", description: "data"},
-        {title: "This is wat"},
-        {title: "This is ddt", description: "eee"},
+        { title: "This is dummy", description: "data" },
+        { title: "This is wat" },
+        { title: "This is ddt", description: "eee" },
 
     ]
 
-    generateTodoPage()
-
     const usernameInput = document.querySelector("input#email")
     const passwordInput = document.querySelector("input#password")
+
+    async function checkIfUserIsAuthorized () {
+        fetch("localhost:8000/auth/")
+    }
 
     function generateSignInErrorMessage(message) {
         const loginFeedback = document.querySelector("#login-feedback")
@@ -22,10 +44,10 @@ window.addEventListener('DOMContentLoaded', (e) => {
         } else {
             const article = document.createElement("article")
             article.className = "message is-danger"
-    
+
             const div = document.createElement("div")
             div.className = "message-body"
-    
+
             const errorMessage = document.createElement("p")
             errorMessage.textContent = message
             errorMessage.id = "login-feedback"
@@ -65,6 +87,11 @@ window.addEventListener('DOMContentLoaded', (e) => {
     function generateSignInPage() {
         resetMainElement()
 
+        currentPage = PAGE_SIGNIN
+
+        todosPageButton.className = CLASS_UNCOLORED_BUTTON
+        signInPageButton.className = CLASS_COLORED_BUTTON
+
         // Text Section
         let divContent = document.createElement("div")
         divContent.className = "content"
@@ -91,6 +118,7 @@ window.addEventListener('DOMContentLoaded', (e) => {
         passwordInput.className = "input is-large"
         passwordInput.placeholder = "Password"
         passwordInput.id = "password"
+        passwordInput.type ="password"
 
         main.appendChild(usernameInput)
         main.appendChild(passwordInput)
@@ -113,9 +141,13 @@ window.addEventListener('DOMContentLoaded', (e) => {
         })
     }
 
-
     function generateTodoPage() {
         resetMainElement()
+
+        currentPage = PAGE_TODO
+
+        todosPageButton.className = CLASS_COLORED_BUTTON
+        signInPageButton.className = CLASS_UNCOLORED_BUTTON
 
         // Header + Add Todo Button Section
         const divHome = document.createElement("div")
@@ -140,7 +172,7 @@ window.addEventListener('DOMContentLoaded', (e) => {
         addTodoButtonP.textContent = "+ Todo"
 
         addTodoButton.appendChild(addTodoButtonP)
-        
+
         divHome.appendChild(homeHeader)
         divHome.appendChild(addTodoButton)
 
@@ -203,7 +235,7 @@ window.addEventListener('DOMContentLoaded', (e) => {
         titleField.appendChild(titleLabel)
         titleField.appendChild(titleControl)
         titleControl.appendChild(titleInput)
-        
+
         // Description Field
         const descriptionField = document.createElement("div")
         descriptionField.className = "field"
@@ -223,7 +255,7 @@ window.addEventListener('DOMContentLoaded', (e) => {
 
         const modalAddTodoButton = document.createElement("button")
         modalAddTodoButton.className = "button is-warning width-100"
-        modalAddTodoButton.id ="modal-add-todo-button"
+        modalAddTodoButton.id = "modal-add-todo-button"
         modalAddTodoButton.textContent = "Add Todo"
 
         modalCardBody.appendChild(titleField)
@@ -232,6 +264,34 @@ window.addEventListener('DOMContentLoaded', (e) => {
 
 
         main.appendChild(modal)
+
+        // Add a click event on buttons to open a specific modal
+        (document.querySelectorAll('.js-modal-trigger') || []).forEach((trigger) => {
+            const modal = trigger.dataset.target;
+            const target = document.getElementById(modal);
+
+            trigger.addEventListener('click', () => {
+                openModal(target);
+            });
+        });
+
+        // Add a click event on various child elements to close the parent modal
+        (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach((close) => {
+            const target = close.closest('.modal');
+
+            close.addEventListener('click', () => {
+                closeModal(target);
+            });
+        });
+
+        // Add a keyboard event to close all modals
+        document.addEventListener('keydown', (event) => {
+            const e = event || window.event;
+
+            if (e.keyCode === ESCAPE_KEY_CODE) { // Escape key
+                closeAllModals();
+            }
+        });
     }
 
     function updateTodosView() {
@@ -247,7 +307,7 @@ window.addEventListener('DOMContentLoaded', (e) => {
 
             const todoItem = document.createElement("div")
             todoItem.className = "todo-item"
-            
+
             const todoItemTitle = document.createElement("p")
             todoItemTitle.className = "is-size-4 todo-title"
             todoItemTitle.textContent = todos[i].title
@@ -284,34 +344,6 @@ window.addEventListener('DOMContentLoaded', (e) => {
             closeModal(modal);
         });
     }
-
-    // Add a click event on buttons to open a specific modal
-    (document.querySelectorAll('.js-modal-trigger') || []).forEach((trigger) => {
-        const modal = trigger.dataset.target;
-        const target = document.getElementById(modal);
-
-        trigger.addEventListener('click', () => {
-            openModal(target);
-        });
-    });
-
-    // Add a click event on various child elements to close the parent modal
-    (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach((close) => {
-        const target = close.closest('.modal');
-
-        close.addEventListener('click', () => {
-            closeModal(target);
-        });
-    });
-
-    // Add a keyboard event to close all modals
-    document.addEventListener('keydown', (event) => {
-        const e = event || window.event;
-
-        if (e.keyCode === ESCAPE_KEY_CODE) { // Escape key
-            closeAllModals();
-        }
-    });
 
 
 })

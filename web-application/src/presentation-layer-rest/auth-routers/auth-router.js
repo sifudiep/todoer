@@ -2,7 +2,7 @@ const { response } = require('express')
 const express = require('express')
 const jwt = require("jsonwebtoken")
 
-const JWT_EXPIRATION_TIME = 60 * 60 * 3
+const JWT_EXPIRATION_TIME = 60 * 15
 
 module.exports = function ({ accountManager }) {
     const router = express.Router()
