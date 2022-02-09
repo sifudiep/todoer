@@ -1,5 +1,5 @@
 window.addEventListener('DOMContentLoaded', (e) => {
-    const main = document.querySelector("main")
+    let main = document.querySelector("main")
 
     let todos = [
         {title: "This is dummy", description: "data"},
@@ -56,9 +56,15 @@ window.addEventListener('DOMContentLoaded', (e) => {
             })
     }
 
+    function resetMainElement() {
+        while (main.firstChild) {
+            main.firstChild.remove()
+        }
+    }
+
     function generateSignInPage() {
-        
-        console.log(`Generating Sign in...`);
+        resetMainElement()
+
         // Text Section
         let divContent = document.createElement("div")
         divContent.className = "content"
@@ -107,7 +113,10 @@ window.addEventListener('DOMContentLoaded', (e) => {
         })
     }
 
+
     function generateTodoPage() {
+        resetMainElement()
+
         // Header + Add Todo Button Section
         const divHome = document.createElement("div")
         divHome.className = "home"
