@@ -12,6 +12,8 @@ window.addEventListener('DOMContentLoaded', (e) => {
     let usernameInputElement = null
     let passwordInputElement = null
 
+    const currentDate = new Date()
+
     let currentPage = ""
 
     todosPageButton.addEventListener("click", (e) => {
@@ -45,10 +47,9 @@ window.addEventListener('DOMContentLoaded', (e) => {
             const data = await response.json()
             return data
         } else {
-            let errorFeedback = document.createElement("p")
-            errorFeedback.textContent = "ERROR 401 : Please login to view Todos."
-            errorFeedback.className = "is-size-3"
-            main.appendChild(errorFeedback)
+            const errorMessage = generateErrorMessage("ERROR 401 : Please login to view Todos")
+
+            main.appendChild(errorMessage)
         }
     }
 
@@ -101,7 +102,8 @@ window.addEventListener('DOMContentLoaded', (e) => {
         if (loginFeedback) {
             loginFeedback.textContent = message
         } else {
-            generateErrorMessage
+            const article = generateErrorMessage(message)
+            const divContent = document.querySelector("div.content")
             divContent.appendChild(article)
         }
     }
@@ -208,7 +210,7 @@ window.addEventListener('DOMContentLoaded', (e) => {
 
         const homeSubheader = document.createElement("span")
         homeSubheader.className = "is-size-6"
-        homeSubheader.textContent = " Mon 31 Jan"
+        homeSubheader.textContent = ` ${currentDate.toLocaleString('en-US', { weekday: 'short', day: 'numeric', month: "short"})}`
 
         homeHeader.appendChild(homeSubheader)
 
