@@ -10,6 +10,8 @@ function authenticateToken(req, res, next) {
     // Checks if authHeader exists, if it exists token receives the value from the .split function
     const token = authHeader && authHeader.split(" ")[1]
 
+    console.log(`TOKEN : ${token}`);
+
     if (token == null) {
         res.setHeader("WWW-Authenticate", "Bearer realm='localhost:8000'")
         res.sendStatus(401)
@@ -38,8 +40,26 @@ function authenticateToken(req, res, next) {
 module.exports = function ({ todoManager }) {
     const router = express.Router()
 
-    router.post("/todos", authenticateToken, (req, res) => {
-        res.sendStatus(200)
+    router.get("/todos", authenticateToken, (req, res) => {
+        todoManager.getAllTodos(req.user.accId, (err, result) => {
+            res.status(200).json(result)
+        })
+    })
+
+    router.post("/add-todo", authenticateToken, (req, res) => {
+        console.log(`REQ.body:`);
+        console.log(req.body);
+
+        todoManager.addTodo(req.body.title, req.body.description, req.user.accId, (err, result) => {
+            if (err) {
+                console.log(`ERROR!`);
+                console.log(err);
+                res.status(400).send({errorMessage: err})
+            }
+
+            res.status(200).send()
+        })
+
     })
 
     return router

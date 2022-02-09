@@ -9,6 +9,9 @@ window.addEventListener('DOMContentLoaded', (e) => {
     let todosPageButton = document.querySelector("#todosPageButton")
     let signInPageButton = document.querySelector("#signInPageButton")
     
+    let usernameInputElement = null
+    let passwordInputElement = null
+
     let currentPage = ""
 
     todosPageButton.addEventListener("click", (e) => {
@@ -21,18 +24,74 @@ window.addEventListener('DOMContentLoaded', (e) => {
         }
     })
 
-    let todos = [
-        { title: "This is dummy", description: "data" },
-        { title: "This is wat" },
-        { title: "This is ddt", description: "eee" },
-
-    ]
+    let todos = []
 
     const usernameInput = document.querySelector("input#email")
     const passwordInput = document.querySelector("input#password")
 
-    async function checkIfUserIsAuthorized () {
-        fetch("localhost:8000/auth/")
+    async function fetchTodos () {
+        const url = "http://localhost:8000/rest/todos"
+        const headers = new Headers()
+        const token = sessionStorage.getItem("jwt")
+        headers.append("content-type", "application/json")
+        headers.append("authorization", `Bearer ${token}`)
+
+        const response = await fetch(url, {
+            method: "GET",
+            headers: headers
+        })
+
+        if (response.status == 200) {
+            const data = await response.json()
+            return data
+        } else {
+            let errorFeedback = document.createElement("p")
+            errorFeedback.textContent = "ERROR 401 : Please login to view Todos."
+            errorFeedback.className = "is-size-3"
+            main.appendChild(errorFeedback)
+        }
+    }
+
+    async function addTodo(title, description) {
+        const url = "http://localhost:8000/rest/add-todo"
+        const headers = new Headers()
+        const token = sessionStorage.getItem("jwt")
+        headers.append("content-type", "application/json")
+        headers.append("authorization", `Bearer ${token}`)
+
+        const response = await fetch(url, {
+            method: "POST",
+            headers: headers,
+            body: JSON.stringify({
+                title,
+                description
+            })
+        })
+
+        if (response.status == 200) {
+            console.log(`Wow it went through!`);
+            generateTodoPage()
+        } else {
+            console.log(`Something went wrong...`);
+        }
+    }
+
+    function generateErrorMessage(message) {
+        const article = document.createElement("article")
+        article.className = "message is-danger"
+
+        const div = document.createElement("div")
+        div.className = "message-body"
+
+
+        const errorMessage = document.createElement("p")
+        errorMessage.textContent = message
+        errorMessage.id = "login-feedback"
+
+        div.appendChild(errorMessage)
+        article.appendChild(div)
+
+        return article 
     }
 
     function generateSignInErrorMessage(message) {
@@ -42,25 +101,13 @@ window.addEventListener('DOMContentLoaded', (e) => {
         if (loginFeedback) {
             loginFeedback.textContent = message
         } else {
-            const article = document.createElement("article")
-            article.className = "message is-danger"
-
-            const div = document.createElement("div")
-            div.className = "message-body"
-
-            const errorMessage = document.createElement("p")
-            errorMessage.textContent = message
-            errorMessage.id = "login-feedback"
-
-            let divContent = document.querySelector("div.content")
+            generateErrorMessage
             divContent.appendChild(article)
-            article.appendChild(div)
-            div.appendChild(errorMessage)
         }
     }
 
     function attemptSignIn() {
-        var url = `http://localhost:8000/auth/sign-in?grant_type=password&username=${usernameInput.value}&password=${passwordInput.value}`
+        const url = `http://localhost:8000/auth/sign-in?grant_type=password&username=${usernameInputElement.value}&password=${passwordInputElement.value}`
         fetch(url, {
             method: "POST"
         })
@@ -72,8 +119,7 @@ window.addEventListener('DOMContentLoaded', (e) => {
 
                 if (data.jwt) {
                     sessionStorage.setItem("jwt", data.jwt)
-                    usernameInput.value = ""
-                    passwordInput.value = ""
+                    generateTodoPage()
                 }
             })
     }
@@ -119,6 +165,9 @@ window.addEventListener('DOMContentLoaded', (e) => {
         passwordInput.placeholder = "Password"
         passwordInput.id = "password"
         passwordInput.type ="password"
+
+        usernameInputElement = usernameInput
+        passwordInputElement = passwordInput
 
         main.appendChild(usernameInput)
         main.appendChild(passwordInput)
@@ -257,13 +306,18 @@ window.addEventListener('DOMContentLoaded', (e) => {
         modalAddTodoButton.className = "button is-warning width-100"
         modalAddTodoButton.id = "modal-add-todo-button"
         modalAddTodoButton.textContent = "Add Todo"
+        modalAddTodoButton.addEventListener("click", (e) => {
+            console.log(`TitleInputValue : ${titleInput.value}`);
+            addTodo(titleInput.value, descriptionInput.value)
+            closeAllModals()
+        })
 
         modalCardBody.appendChild(titleField)
         modalCardBody.appendChild(descriptionField)
         modalCardBody.appendChild(modalAddTodoButton)
 
-
         main.appendChild(modal);
+
 
 
         // Add a click event on buttons to open a specific modal
@@ -295,7 +349,8 @@ window.addEventListener('DOMContentLoaded', (e) => {
         });
     }
 
-    function updateTodosView() {
+    async function updateTodosView() {
+        todos = await fetchTodos()
         const divContainer = document.querySelector("div.box")
 
         if (divContainer) {

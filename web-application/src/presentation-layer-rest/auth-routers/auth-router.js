@@ -2,7 +2,7 @@ const { response } = require('express')
 const express = require('express')
 const jwt = require("jsonwebtoken")
 
-const JWT_EXPIRATION_TIME = 60 * 15
+const JWT_EXPIRATION_TIME = 60 * 60 // 1 HOUR
 
 module.exports = function ({ accountManager }) {
     const router = express.Router()
@@ -15,13 +15,9 @@ module.exports = function ({ accountManager }) {
                 res.status(401).json({err: err})
             }
             if (account) {
-                // TODO SEND BACK Access Token for user's resources
-
                 const PRIVATE_KEY = "lolz"
-
                 let payload = {
-                    accId: "1",
-                    name: "mikael"
+                    accId: account.accId,
                 }
 
                 jwt.sign(payload, PRIVATE_KEY, {expiresIn: JWT_EXPIRATION_TIME}, (err, token) => {                    

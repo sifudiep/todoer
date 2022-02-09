@@ -12,6 +12,7 @@ app
     .use(cors({
         origin: "http://localhost"
     }))
+    .use(express.json())
     .use("/rest", rest)
     .use("/auth", auth)
     .listen(8080, () => {

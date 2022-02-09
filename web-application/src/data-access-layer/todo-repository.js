@@ -8,15 +8,11 @@ module.exports = function({}) {
             const values = [title, description, accId]
         
             db.query(query, values, function(error, result){
-                console.log(`result addTodo: `);
-                console.log(result);
-        
                 if(error){
-                    console.log("ERROR!");
-                    console.log(error);
+                    callback(error, null)
                 }
-        
-        
+
+                callback(null, result)
             })
         },
         getAllTodos: function(accId, callback) {
