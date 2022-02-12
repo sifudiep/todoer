@@ -9,10 +9,10 @@
     </article>
     {{/if}}
 
-    {{#if error}}
+    {{#if errorMessage}}
     <article class="message is-danger">
         <div class="message-body">
-            <p>{{error}}</p>
+            <p>{{errorMessage}}</p>
         </div>
     </article>
     {{/if}}
@@ -21,9 +21,9 @@
 <form method="POST" action="sign-up">
     <input type="hidden" name="_csrf" value="{{csrfToken}}">
     <input type="email" class="input is-large" placeholder="Email" name="email" required="required"
-        pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,14}$">
+        pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,14}$" value="{{previousEmail}}">
     <input type="email" class="input is-large" placeholder="Verify Email" name="verifyEmail" required="required"
-        pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,14}$">
+        pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,14}$" value="{{previousVerifyEmail}}">
     <input type="password" class="input is-large" placeholder="Password" name="password" required="required">
     <input type="password" class="input is-large" placeholder="Verify Password" name="verifyPassword"
         required="required">

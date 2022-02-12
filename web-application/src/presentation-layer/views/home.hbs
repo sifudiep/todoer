@@ -5,8 +5,12 @@
     </button>
 </div>
 
-{{#if errMessage}}
-    <p class="is-size-4">{{errMessage}}</p>
+{{#if errorMessage}}
+<article class="message is-danger">
+    <div class="message-body">
+        {{errorMessage}}
+    </div>
+</article>
 {{/if}}
 
 {{#each todos}}
@@ -15,6 +19,7 @@
         <p class="is-size-4 todo-title">{{this.title}}</p>
         <p class="is-size-7 todo-description">{{this.description}}</p>
         <form action="todo/delete" method="POST" class="justify-self-end">
+            <input type="hidden" name="_csrf" value="{{@root.csrfToken}}">
             <input type="hidden" value="{{this.title}}" name="title">
             <button class="button is-success is-light todo-done">Done</button>
         </form>
@@ -35,20 +40,20 @@
                 <div class="field">
                     <label class="label">Title</label>
                     <div class="control">
-                        <input class="input" placeholder="Title" name="title" required="required" maxlength="50">
+                        <input class="input" placeholder="Title" name="title" required="required" maxlength="50" value="{{previousTitle}}">
                     </div>
                 </div>
                 <div class="field">
                     <label class="label">Description</label>
                     <div class="control">
-                        <input class="input" placeholder="Description" name="description" maxlength="100">
+                        <input class="input" placeholder="Description" name="description" maxlength="100" value="{{previousDescription}}">
                     </div>
                 </div>
 
                 <button class="button is-warning width-100" id="modal-add-todo-button">Add Todo</button>
             </form>
         </section>
-        
+
     </div>
 </div>
 

@@ -7,12 +7,12 @@ const JWT_EXPIRATION_TIME = 60 * 60 // 1 HOUR
 module.exports = function ({ accountManager }) {
     const router = express.Router()
 
-    
+
     router.post("/sign-in", (req, res) => {
         // TODO Store PRIVATE_KEY in a more secure way.
         accountManager.attemptSignIn(req.query.username, req.query.password, (err, account) => {
             if (err) {
-                res.status(401).json({err: err})
+                res.status(401).json({ err: err })
             }
             if (account) {
                 const PRIVATE_KEY = "lolz"
@@ -21,7 +21,7 @@ module.exports = function ({ accountManager }) {
                     email: account.email
                 }
 
-                jwt.sign(payload, PRIVATE_KEY, {expiresIn: JWT_EXPIRATION_TIME}, (err, token) => {                    
+                jwt.sign(payload, PRIVATE_KEY, { expiresIn: JWT_EXPIRATION_TIME }, (err, token) => {
                     let result = {
                         jwt: token
                     }
@@ -32,7 +32,7 @@ module.exports = function ({ accountManager }) {
         })
     })
 
-    
+
 
     return router
 }

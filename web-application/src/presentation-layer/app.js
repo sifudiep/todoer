@@ -3,8 +3,7 @@ const express = require("express")
 const expressHandlebars = require("express-handlebars")
 
 const COOKIE_MILLISECONDS_LIFESPAN = 1000 * 60 * 60
-
-const cookieParser = require("cookie-parser")
+const REDIS_PORT = 6379
 
 const csrf = require("csurf")
 const csrfProtection = csrf()
@@ -39,7 +38,7 @@ const session = require("express-session")
 let RedisStore = require("connect-redis")(session)
 
 const Redis = require("ioredis");
-const ioredis = new Redis(6379, "redis-server"); // uses defaults unless given configuration object
+const ioredis = new Redis(REDIS_PORT, "redis-server"); // uses defaults unless given configuration object
 
 // Adds body to req
 app.use(express.urlencoded({
@@ -48,7 +47,7 @@ app.use(express.urlencoded({
 
 app.use(
     session({
-        store: new RedisStore({ client: ioredis}),
+        store: new RedisStore({ client: ioredis }),
         saveUninitialized: false,
         secret: 'aSecreetKey',
         resave: false,

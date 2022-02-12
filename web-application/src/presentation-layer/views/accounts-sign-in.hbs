@@ -1,10 +1,10 @@
 <div class="content">
     <h2>Sign in</h2>
     <p>Sign in using the form below.</p>
-    {{#if error}}
+    {{#if errorMessage}}
     <article class="message is-danger">
         <div class="message-body">
-            {{error}}
+            {{errorMessage}}
         </div>
     </article>
     {{/if}}
@@ -13,7 +13,7 @@
 <form method="POST" action="sign-in">
     <input type="hidden" name="_csrf" value="{{csrfToken}}">
     <input type="email" class="input is-large" placeholder="Email" name="email" required="required"
-        pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,14}$">
+        pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,14}$" value="{{previousEmail}}">
     <input type="password" class="input is-large" placeholder="Password" name="password" required="required">
     <div id="login-button-container">
         <button class="button is-warning" id="login-button">Sign In!</button>
