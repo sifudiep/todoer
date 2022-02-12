@@ -10,7 +10,8 @@ module.exports = function({todoManager}) {
             res.render("home.hbs", {
                 todos,
                 date: ` ${currentDate.toLocaleString('en-US', { weekday: 'short', day: 'numeric', month: "short"})}`,
-                errMessage: req.session.isAuth ? "" : "Error 401 : User is not authenticated!"
+                errMessage: req.session.isAuth ? "" : "Error 401 : User is not authenticated!",
+                csrfToken : req.csrfToken()
             })
         })
     })

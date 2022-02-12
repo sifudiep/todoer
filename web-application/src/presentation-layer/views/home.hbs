@@ -31,6 +31,7 @@
         </header>
         <section class="modal-card-body">
             <form action="todo/add" method="POST">
+                <input type="hidden" name="_csrf" value="{{csrfToken}}">
                 <div class="field">
                     <label class="label">Title</label>
                     <div class="control">

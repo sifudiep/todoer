@@ -1,5 +1,2 @@
-5. Create SignUp
-6. Add Email to JWT payload
 7. Add CSRF protection
 8. Change text in About and Contact 
-9. Add delete route and functionality to Todos

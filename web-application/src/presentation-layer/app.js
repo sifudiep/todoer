@@ -4,6 +4,11 @@ const expressHandlebars = require("express-handlebars")
 
 const COOKIE_MILLISECONDS_LIFESPAN = 1000 * 60 * 60
 
+const cookieParser = require("cookie-parser")
+
+const csrf = require("csurf")
+const csrfProtection = csrf()
+
 const awilix = require("awilix")
 
 const accountRepository = require("../data-access-layer/account-repository")
@@ -36,6 +41,11 @@ let RedisStore = require("connect-redis")(session)
 const Redis = require("ioredis");
 const ioredis = new Redis(6379, "redis-server"); // uses defaults unless given configuration object
 
+// Adds body to req
+app.use(express.urlencoded({
+    extended: false
+}))
+
 app.use(
     session({
         store: new RedisStore({ client: ioredis}),
@@ -50,10 +60,7 @@ app.use(
     })
 )
 
-// Adds body to req
-app.use(express.urlencoded({
-    extended: false
-}))
+app.use(csrfProtection);
 
 app.engine("hbs", expressHandlebars.engine({
     defaultLayout: "main.hbs"
@@ -70,24 +77,6 @@ app.use("/", theVariousRouter)
 app.use("/accounts", theAccountRouter)
 app.use("/todo", theTodoRouter)
 
-
-
-// Middleware that blocks all unauthorized requests AFTER this code.
-// app.use((req, res, next) => {
-//     if (!req.session || !req.session.authorized) {
-//         const err = new Error("You are not authorized!")
-//         err.statuscode = 401
-//         next(err)
-//     }
-
-//     next()
-// })
-
-
-// Start listening for incoming HTTP requests!
-// app.listen(8080, function () {
-//     console.log("Running on 8080!")
-// })
 
 module.exports = app
 
