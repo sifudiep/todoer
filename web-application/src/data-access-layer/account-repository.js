@@ -1,6 +1,8 @@
 const db = require('./db')
 const bcrypt = require('bcryptjs')
 
+const BCRYPT_SALT_LENGTH = 10
+
 module.exports = function({}) {
     return {
         getAllAccounts: function(callback){
@@ -54,7 +56,7 @@ module.exports = function({}) {
             })
         },
         attemptSignUp: async function(email, password, callback) {
-            const hashedPassword = await bcrypt.hash(password, 10)
+            const hashedPassword = await bcrypt.hash(password, BCRYPT_SALT_LENGTH)
 
             const query = `INSERT INTO accounts (email, hashedPassword) VALUES (?, ?)`
             const values = [email, hashedPassword]

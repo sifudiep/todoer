@@ -1,20 +1,34 @@
 const express = require('express')
+const { homePageErrorState } = require('../../global.js')
 
 const currentDate = new Date()
 
-const helperFunctions = require("../../helperFunctions.js")
+const global = require("../../global.js")
 
 
 module.exports = function({todoManager}) {
     const router = express.Router()
 
-    router.get("/", helperFunctions.userIsAuthorized, (req, res) => {
+    router.get("/", global.userIsAuthorized, (req, res) => {
         todoManager.getAllTodos(req.session.accId, (err, todos) => {
-            res.render("home.hbs", {
-                todos,
-                date: ` ${currentDate.toLocaleString('en-US', { weekday: 'short', day: 'numeric', month: "short"})}`,
-                csrfToken : req.csrfToken()
-            })
+            if (global.homePageErrorState.errorHasOccurred) {
+                res.render("home.hbs", {
+                    todos,
+                    date: ` ${currentDate.toLocaleString('en-US', { weekday: 'short', day: 'numeric', month: "short"})}`,
+                    csrfToken : req.csrfToken(),
+                    errorMessage: homePageErrorState.errorMessage,
+                    previousTitle: homePageErrorState.previousTitle,
+                    previousDescription: homePageErrorState.previousDescription
+                })
+                
+                global.homePageErrorState.errorHasOccurred = false
+            } else {
+                res.render("home.hbs", {
+                    todos,
+                    date: ` ${currentDate.toLocaleString('en-US', { weekday: 'short', day: 'numeric', month: "short"})}`,
+                    csrfToken : req.csrfToken()
+                })
+            }
         })
     })
     

@@ -4,10 +4,13 @@ const expressHandlebars = require("express-handlebars")
 
 const COOKIE_MILLISECONDS_LIFESPAN = 1000 * 60 * 60
 const REDIS_PORT = 6379
+const SECRET_STORE_KEY = "aSecreetKey"
+const REDIS_SERVER_NAME = "redis-server"
 
 const csrf = require("csurf")
 const csrfProtection = csrf()
 
+const Redis = require("ioredis");
 const awilix = require("awilix")
 
 const accountRepository = require("../data-access-layer/account-repository")
@@ -37,8 +40,7 @@ const app = express()
 const session = require("express-session")
 let RedisStore = require("connect-redis")(session)
 
-const Redis = require("ioredis");
-const ioredis = new Redis(REDIS_PORT, "redis-server"); // uses defaults unless given configuration object
+const ioredis = new Redis(REDIS_PORT, REDIS_SERVER_NAME); // uses defaults unless given configuration object
 
 // Adds body to req
 app.use(express.urlencoded({
@@ -49,7 +51,7 @@ app.use(
     session({
         store: new RedisStore({ client: ioredis }),
         saveUninitialized: false,
-        secret: 'aSecreetKey',
+        secret: SECRET_STORE_KEY,
         resave: false,
         cookie: {
             secure: false, // TODO : Change to TRUE during production

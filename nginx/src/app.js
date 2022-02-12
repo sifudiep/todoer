@@ -398,8 +398,6 @@ window.addEventListener('DOMContentLoaded', (e) => {
             doneButton.className = "button is-success is-light todo-done"
             doneButton.textContent = "Done"
             doneButton.addEventListener("click", (e) => {
-                console.log(`Hello`);
-                console.log(todoItem.textContent);
                 deleteTodo(todoItemTitle.textContent)
             })
 
