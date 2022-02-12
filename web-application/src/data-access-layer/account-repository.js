@@ -8,8 +8,8 @@ module.exports = function({}) {
             const query = `SELECT * FROM accounts ORDER BY email`
             const values = []
             
-            db.query(query, values, function(error, accounts){
-                if(error){
+            db.query(query, values, function(err, accounts){
+                if(err){
                     callback(['databaseError'], null)
                 }else{
                     callback([], accounts)
@@ -22,8 +22,8 @@ module.exports = function({}) {
             const query = `SELECT * FROM accounts WHERE email = ? LIMIT 1`
             const values = [email]
             
-            db.query(query, values, function(error, accounts){
-                if(error){
+            db.query(query, values, function(err, accounts){
+                if(err){
                     callback(['databaseError'], null)
                 }else{
                     callback(null, accounts[0])
@@ -32,14 +32,14 @@ module.exports = function({}) {
             
         },
         attemptSignIn: function(email, password, callback) {
-            this.getAccountByEmail(email, (err, account) => {
+            this.getAccountByEmail(email, function(err, account) {
                 if (err) {
                     console.log(err);
                 }
                 if (account) {
                     bcrypt.compare(password, account.hashedPassword, (err, loginSuccess) => {
                         if (err) {
-                            console.error(err)
+                            console.err(err)
                             callback(err, null)
                         }
                         if (loginSuccess) {
@@ -51,6 +51,16 @@ module.exports = function({}) {
                 } else {
                     callback("EMAIL DOES NOT EXIST", false)
                 }
+            })
+        },
+        attemptSignUp: async function(email, password, callback) {
+            const hashedPassword = await bcrypt.hash(password, 10)
+
+            const query = `INSERT INTO accounts (email, hashedPassword) VALUES (?, ?)`
+            const values = [email, hashedPassword]
+
+            db.query(query, values, (err, res) => {
+                callback(err, res)
             })
         }
     }

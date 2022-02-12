@@ -78,3 +78,7 @@ main{
 .is-invisible {
     display: none;
 }
+
+.justify-self-end {
+    justify-self: end;
+}

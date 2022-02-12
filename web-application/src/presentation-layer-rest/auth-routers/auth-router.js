@@ -18,6 +18,7 @@ module.exports = function ({ accountManager }) {
                 const PRIVATE_KEY = "lolz"
                 let payload = {
                     accId: account.accId,
+                    email: account.email
                 }
 
                 jwt.sign(payload, PRIVATE_KEY, {expiresIn: JWT_EXPIRATION_TIME}, (err, token) => {                    

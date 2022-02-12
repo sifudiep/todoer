@@ -70,6 +70,8 @@ app.use("/", theVariousRouter)
 app.use("/accounts", theAccountRouter)
 app.use("/todo", theTodoRouter)
 
+
+
 // Middleware that blocks all unauthorized requests AFTER this code.
 // app.use((req, res, next) => {
 //     if (!req.session || !req.session.authorized) {

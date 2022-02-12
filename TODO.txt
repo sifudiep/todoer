@@ -1,4 +1,5 @@
-1. Be able to view resources
-2. Add authorization to routes
-3. Make app usable without logging in, todos are stored in session.
-4. CHECK TUTORIAL ON REST API FOR CONNECT ID TOKEN
+5. Create SignUp
+6. Add Email to JWT payload
+7. Add CSRF protection
+8. Change text in About and Contact 
+9. Add delete route and functionality to Todos

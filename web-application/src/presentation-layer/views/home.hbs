@@ -1,16 +1,23 @@
 <div class="home">
-    <p class="is-size-2 home-title">Today<span class="is-size-6"> Mon 31 Jan</span></p>
+    <p class="is-size-2 home-title">Today<span class="is-size-6"> {{date}}</span></p>
     <button class="button is-warning home-add-todo js-modal-trigger" data-target="modal-add-todo">
         <p class="is-size-4">+ Todo</p>
     </button>
 </div>
+
+{{#if errMessage}}
+    <p class="is-size-4">{{errMessage}}</p>
+{{/if}}
 
 {{#each todos}}
 <div class="box">
     <div class="todo-item">
         <p class="is-size-4 todo-title">{{this.title}}</p>
         <p class="is-size-7 todo-description">{{this.description}}</p>
-        <button class="button is-success is-light todo-done">Done</button>
+        <form action="todo/delete" method="POST" class="justify-self-end">
+            <input type="hidden" value="{{this.title}}" name="title">
+            <button class="button is-success is-light todo-done">Done</button>
+        </form>
     </div>
 </div>
 {{/each}}

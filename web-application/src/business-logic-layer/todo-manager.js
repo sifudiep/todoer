@@ -5,6 +5,9 @@ module.exports = function({todoRepository}) {
         },
         getAllTodos: function(accId, callback) {
             todoRepository.getAllTodos(accId, callback)
+        },
+        deleteTodo: function(accId, title, callback) {
+            todoRepository.deleteTodo(accId, title, callback)
         }
     }
 }

@@ -8,6 +8,9 @@ module.exports = function({accountRepository}) {
         },
         attemptSignIn: function(email, password, callback) {
             accountRepository.attemptSignIn(email, password, callback)
+        },
+        attemptSignUp: function(email, password, callback) {
+            accountRepository.attemptSignUp(email, password, callback)
         }
     }
 }

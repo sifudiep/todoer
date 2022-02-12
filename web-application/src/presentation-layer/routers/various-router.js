@@ -1,5 +1,6 @@
 const express = require('express')
-const { Cookie } = require('express-session')
+
+const currentDate = new Date()
 
 module.exports = function({todoManager}) {
     const router = express.Router()
@@ -7,7 +8,9 @@ module.exports = function({todoManager}) {
     router.get("/", (req, res) => {
         todoManager.getAllTodos(req.session.accId, (err, todos) => {
             res.render("home.hbs", {
-                todos
+                todos,
+                date: ` ${currentDate.toLocaleString('en-US', { weekday: 'short', day: 'numeric', month: "short"})}`,
+                errMessage: req.session.isAuth ? "" : "Error 401 : User is not authenticated!"
             })
         })
     })

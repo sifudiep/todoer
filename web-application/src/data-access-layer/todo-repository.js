@@ -7,29 +7,37 @@ module.exports = function({}) {
         
             const values = [title, description, accId]
         
-            db.query(query, values, function(error, result){
-                if(error){
-                    callback(error, null)
+            db.query(query, values, function(err, res){
+                if(err){
+                    callback(err, null)
                 }
 
-                callback(null, result)
+                callback(null, res)
             })
         },
         getAllTodos: function(accId, callback) {
-            const query = "SELECT * from todos WHERE accId = ?"
+            const query = "SELECT * FROM todos WHERE accId = ?"
         
             const values = [accId]
         
-            db.query(query, values, function(error, result){
-                if(error){
-                    console.log("ERROR!");
-                    console.log(error);
+            db.query(query, values, function(err, res){
+                if(err){
+                    console.log("err!");
+                    console.log(err);
                 }
                 
-                if (result) {
-                    callback(null, result)
+                if (res) {
+                    callback(null, res)
                 }
-                
+            })
+        },
+        deleteTodo: function(accId, title, callback) {
+            const query = "DELETE FROM todos WHERE accId = ? AND title = ?"
+
+            const values = [accId, title]
+
+            db.query(query, values, function(err, res) {
+                callback(err, res)
             })
         }
     }
