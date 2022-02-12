@@ -8,13 +8,13 @@ const rest = require("./presentation-layer-rest/rest-api")
 const auth = require("./presentation-layer-rest/auth-server")
 
 app
-    .use("/", web)
     .use(cors({
         origin: "http://localhost"
     }))
     .use(express.json())
     .use("/rest", rest)
     .use("/auth", auth)
+    .use("/", web)
     .listen(8080, () => {
         console.log(`listening on port 8080 for web, rest and auth!`);
     })

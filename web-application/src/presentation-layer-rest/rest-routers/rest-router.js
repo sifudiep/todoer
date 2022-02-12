@@ -59,7 +59,12 @@ module.exports = function ({ todoManager }) {
 
             res.status(200).send()
         })
+    })
 
+    router.post("/delete-todo", authenticateToken, (req, res) => {
+        todoManager.deleteTodo(req.user.accId, req.body.title, (err, result) => {
+            res.status(200).send()
+        })
     })
 
     return router

@@ -53,6 +53,26 @@ window.addEventListener('DOMContentLoaded', (e) => {
         }
     }
 
+    async function deleteTodo(title) {
+        const url = "http://localhost:8000/rest/delete-todo"
+        const headers = new Headers()
+        const token = sessionStorage.getItem("jwt")
+        headers.append("content-type", "application/json")
+        headers.append("authorization", `Bearer ${token}`)
+
+        const response = await fetch(url, {
+            method: "POST",
+            headers: headers,
+            body: JSON.stringify({
+                title
+            })
+        })
+
+        if (response.status == 200) {
+            generateTodoPage()
+        }
+    }
+
     async function addTodo(title, description) {
         const url = "http://localhost:8000/rest/add-todo"
         const headers = new Headers()
@@ -377,6 +397,11 @@ window.addEventListener('DOMContentLoaded', (e) => {
             const doneButton = document.createElement("button")
             doneButton.className = "button is-success is-light todo-done"
             doneButton.textContent = "Done"
+            doneButton.addEventListener("click", (e) => {
+                console.log(`Hello`);
+                console.log(todoItem.textContent);
+                deleteTodo(todoItemTitle.textContent)
+            })
 
             todoItem.appendChild(todoItemTitle)
             todoItem.appendChild(todoItemDescription)
