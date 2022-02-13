@@ -22,5 +22,6 @@ module.exports = {
         errorMessage: "",
         previousTitle: "",
         previousDescription: ""
-    }
+    },
+    JWTSecretKey: "lolz"
 }

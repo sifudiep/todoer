@@ -1,6 +1,7 @@
 const { response } = require('express')
 const express = require('express')
 const jwt = require("jsonwebtoken")
+const global = require("../../global")
 
 const JWT_EXPIRATION_TIME = 60 * 60 // 1 HOUR
 
@@ -15,7 +16,7 @@ module.exports = function ({ accountManager }) {
                 res.status(401).json({ err: err })
             }
             if (account) {
-                const PRIVATE_KEY = "lolz"
+                const PRIVATE_KEY = global.JWTSecretKey
                 let payload = {
                     accId: account.accId,
                     email: account.email

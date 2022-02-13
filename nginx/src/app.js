@@ -98,7 +98,7 @@ window.addEventListener('DOMContentLoaded', (e) => {
         } else {
             const jsonResponse = await response.json()
             if (jsonResponse.errorMessage.code == ERR_DUPLICATE_ENTRY) {    
-                generateTodoPage("Title is already used by a different todo item. Please use a different title.")
+                generateTodoPage("Title is already used by a different todo item. Please use a different title.", title, description)
             }
         }
     }
@@ -218,7 +218,7 @@ window.addEventListener('DOMContentLoaded', (e) => {
         })
     }
 
-    function generateTodoPage(errorMessage) {
+    function generateTodoPage(errorMessage, title, description) {
         resetMainElement()
 
         currentPage = PAGE_TODO
@@ -313,6 +313,7 @@ window.addEventListener('DOMContentLoaded', (e) => {
         titleInput.className = "input"
         titleInput.placeholder = "Title"
         titleInput.maxLength = "50"
+        titleInput.value = title || ""
 
         titleField.appendChild(titleLabel)
         titleField.appendChild(titleControl)
@@ -330,6 +331,7 @@ window.addEventListener('DOMContentLoaded', (e) => {
         descriptionInput.className = "input"
         descriptionInput.placeholder = "Description"
         descriptionInput.maxLength = "100"
+        descriptionInput.value = description || ""
 
         descriptionField.appendChild(descriptionLabel)
         descriptionField.appendChild(descriptionControl)

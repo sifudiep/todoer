@@ -2,6 +2,7 @@ const express = require('express')
 const jwt = require("jsonwebtoken")
 
 const TOKEN_EXPIRED_ERROR = "TokenExpiredError"
+const global = require("../../global")
 
 function authenticateToken(req, res, next) {
     // Authorization header comes in format "Bearer {JWT TOKEN}" 
@@ -18,7 +19,7 @@ function authenticateToken(req, res, next) {
         return
     }
 
-    jwt.verify(token, "lolz", (err, user) => {
+    jwt.verify(token, global.JWTSecretKey, (err, user) => {
         if (err) {
             if (err.name == TOKEN_EXPIRED_ERROR) {
                 res.setHeader("WWW-Authenticate", "Bearer realm='localhost:8000',err='invalid_token', err_description='The access token expired'")
@@ -49,8 +50,6 @@ module.exports = function ({ todoManager }) {
     router.post("/add-todo", authenticateToken, (req, res) => {
         todoManager.addTodo(req.body.title, req.body.description, req.user.accId, (err, result) => {
             if (err) {
-                console.log(`ERROR!`);
-                console.log(err);
                 res.status(409).send({errorMessage: err})
             }
 
