@@ -47,14 +47,11 @@ module.exports = function ({ todoManager }) {
     })
 
     router.post("/add-todo", authenticateToken, (req, res) => {
-        console.log(`REQ.body:`);
-        console.log(req.body);
-
         todoManager.addTodo(req.body.title, req.body.description, req.user.accId, (err, result) => {
             if (err) {
                 console.log(`ERROR!`);
                 console.log(err);
-                res.status(400).send({errorMessage: err})
+                res.status(409).send({errorMessage: err})
             }
 
             res.status(200).send()

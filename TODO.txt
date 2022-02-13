@@ -1,7 +1,4 @@
 8. Does the need to be a Contact and About page on the application? Since there's no mentioning of it in the Github website as far as I can tell.
 9. What to do about JWT secret token? How to store safely without storing it in ENV Variable for production mode(eg. Heroku)?
-10. Does application need to run on production or is localhost fine?
-11. Does SPA page need to defend against CSRF?
 12. Does SPA page need to meet same criteria as Handlebars app?
-13. How to handle title input error message? Using a modal, single page-ish style...
 

@@ -5,6 +5,8 @@ window.addEventListener('DOMContentLoaded', (e) => {
     const PAGE_SIGNIN = "PAGE_SIGNIN"
     const PAGE_TODO = "PAGE_TODO"
 
+    const ERR_DUPLICATE_ENTRY = "ER_DUP_ENTRY"
+
     let main = document.querySelector("main")
     let todosPageButton = document.querySelector("#todosPageButton")
     let signInPageButton = document.querySelector("#signInPageButton")
@@ -89,11 +91,15 @@ window.addEventListener('DOMContentLoaded', (e) => {
             })
         })
 
+
         if (response.status == 200) {
-            console.log(`Wow it went through!`);
+            console.log(`200, generateTodoPage()`);
             generateTodoPage()
         } else {
-            console.log(`Something went wrong...`);
+            const jsonResponse = await response.json()
+            if (jsonResponse.errorMessage.code == ERR_DUPLICATE_ENTRY) {    
+                generateTodoPage("Title is already used by a different todo item. Please use a different title.")
+            }
         }
     }
 
@@ -212,13 +218,18 @@ window.addEventListener('DOMContentLoaded', (e) => {
         })
     }
 
-    function generateTodoPage() {
+    function generateTodoPage(errorMessage) {
         resetMainElement()
 
         currentPage = PAGE_TODO
 
         todosPageButton.className = CLASS_COLORED_BUTTON
         signInPageButton.className = CLASS_UNCOLORED_BUTTON
+
+        if (errorMessage) {
+            const errorElement = generateErrorMessage(errorMessage)
+            main.appendChild(errorElement)
+        }
 
         // Header + Add Todo Button Section
         const divHome = document.createElement("div")
