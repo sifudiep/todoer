@@ -6,6 +6,8 @@ window.addEventListener('DOMContentLoaded', (e) => {
     const PAGE_TODO = "PAGE_TODO"
 
     const ERR_DUPLICATE_ENTRY = "ER_DUP_ENTRY"
+    const HTTP_CODE_OK = 200
+
 
     let main = document.querySelector("main")
     let todosPageButton = document.querySelector("#todosPageButton")
@@ -70,7 +72,7 @@ window.addEventListener('DOMContentLoaded', (e) => {
             })
         })
 
-        if (response.status == 200) {
+        if (response.status == HTTP_CODE_OK) {
             generateTodoPage()
         }
     }
@@ -92,8 +94,7 @@ window.addEventListener('DOMContentLoaded', (e) => {
         })
 
 
-        if (response.status == 200) {
-            console.log(`200, generateTodoPage()`);
+        if (response.status == HTTP_CODE_OK) {
             generateTodoPage()
         } else {
             const jsonResponse = await response.json()
@@ -342,7 +343,6 @@ window.addEventListener('DOMContentLoaded', (e) => {
         modalAddTodoButton.id = "modal-add-todo-button"
         modalAddTodoButton.textContent = "Add Todo"
         modalAddTodoButton.addEventListener("click", (e) => {
-            console.log(`TitleInputValue : ${titleInput.value}`);
             addTodo(titleInput.value, descriptionInput.value)
             closeAllModals()
         })

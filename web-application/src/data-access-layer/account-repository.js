@@ -34,14 +34,10 @@ module.exports = function({}) {
             
         },
         attemptSignIn: function(email, password, callback) {
-            this.getAccountByEmail(email, function(err, account) {
-                if (err) {
-                    console.log(err);
-                }
+            this.getAccountByEmail(email, function(error, account) {
                 if (account) {
                     bcrypt.compare(password, account.hashedPassword, (err, loginSuccess) => {
                         if (err) {
-                            console.err(err)
                             callback(err, null)
                         }
                         if (loginSuccess) {
