@@ -136,7 +136,7 @@ window.addEventListener('DOMContentLoaded', (e) => {
     }
 
     function attemptSignIn() {
-        const url = `http://localhost:8000/auth/sign-in?grant_type=password&username=${usernameInputElement.value}&password=${passwordInputElement.value}`
+        const url = `http://localhost:8000/rest/auth/sign-in?grant_type=password&username=${usernameInputElement.value}&password=${passwordInputElement.value}`
         fetch(url, {
             method: "POST"
         })

@@ -1,7 +1,7 @@
 -- Create a table to store user accounts in.
 CREATE TABLE accounts (
 	id int(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-	email VARCHAR(50) NOT NULL,
+	email VARCHAR(50) UNIQUE NOT NULL,
 	hashedPassword VARCHAR(80) NOT NULL,
 	CONSTRAINT emailUnique UNIQUE (email)
 );
