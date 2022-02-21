@@ -8,7 +8,6 @@ window.addEventListener('DOMContentLoaded', (e) => {
     const ERR_DUPLICATE_ENTRY = "ER_DUP_ENTRY"
     const HTTP_CODE_OK = 200
 
-
     let main = document.querySelector("main")
     let todosPageButton = document.querySelector("#todosPageButton")
     let signInPageButton = document.querySelector("#signInPageButton")
@@ -31,9 +30,6 @@ window.addEventListener('DOMContentLoaded', (e) => {
     })
 
     let todos = []
-
-    const usernameInput = document.querySelector("input#email")
-    const passwordInput = document.querySelector("input#password")
 
     async function fetchTodos () {
         const url = "http://localhost:8000/rest/todos"
@@ -168,7 +164,9 @@ window.addEventListener('DOMContentLoaded', (e) => {
         signInPageButton.className = CLASS_COLORED_BUTTON
 
         // Text Section
+        
         let divContent = document.createElement("div")
+
         divContent.className = "content"
 
         main.appendChild(divContent)
