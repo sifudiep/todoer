@@ -8,7 +8,7 @@ module.exports = function({}) {
             
             db.query(query, values, function(err, accounts){
                 if(err){
-                    callback(err, null)
+                    callback("ERROR - Could not find user!", null)
                 }else{
                     callback(null, accounts[0])
                 }
@@ -21,7 +21,7 @@ module.exports = function({}) {
 
             db.query(query, values, (err, res) => {
                 if (err) {
-                    callback(err, null)
+                    callback("ERROR - Could not create account!", null)
                 } else {
                     callback(null, res)
                 }

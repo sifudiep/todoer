@@ -10,9 +10,9 @@ module.exports = function({}) {
             db.query(query, values, function(err, res){
                 if(err){
                     callback(err, null)
+                } else {
+                    callback("ERROR - Could not add Todo!", res)
                 }
-
-                callback(null, res)
             })
         },
         getAllTodos: function(accId, callback) {
@@ -22,7 +22,7 @@ module.exports = function({}) {
         
             db.query(query, values, function(err, res){
                 if(err){
-                    callback(err, null)
+                    callback("ERROR - Could not retrieve all Todos!", null)
                 } else {
                     callback(null, res)
                 }
@@ -34,7 +34,11 @@ module.exports = function({}) {
             const values = [accId, title]
 
             db.query(query, values, function(err, res) {
-                callback(err, res)
+                if (err) {
+                    callback("ERROR - Could not delete Todo!", null)
+                } else {
+                    callback(null, res)
+                }
             })
         }
     }
