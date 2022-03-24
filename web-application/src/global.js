@@ -1,9 +1,6 @@
 const currentDate = new Date()
 const UNAUTHORIZED_ERROR_CODE = 401
 
-
-
-
 module.exports = {
     userIsAuthorized: function (req, res, next) {
         if (!req.session || !req.session.isAuth) {
@@ -23,5 +20,5 @@ module.exports = {
         previousTitle: "",
         previousDescription: ""
     },
-    JWTSecretKey: "lolz"
+    JWTSecretKey: "HejHej123"
 }
