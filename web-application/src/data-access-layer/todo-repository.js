@@ -22,11 +22,8 @@ module.exports = function({}) {
         
             db.query(query, values, function(err, res){
                 if(err){
-                    console.log("err!");
-                    console.log(err);
-                }
-                
-                if (res) {
+                    callback(err, null)
+                } else {
                     callback(null, res)
                 }
             })

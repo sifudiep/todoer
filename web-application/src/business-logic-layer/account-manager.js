@@ -1,13 +1,9 @@
 const accountValidator = require("./account-validator")
+const bcrypt = require("bcryptjs")
+const BCRYPT_SALT_LENGTH = 10
 
 module.exports = function({accountRepository}) {
     return {
-        getAllAccounts: function(callback){
-            accountRepository.getAllAccounts(callback)
-        },
-        getAccountByEmail: function(email, callback){
-            accountRepository.getAccountByEmail(email, callback)
-        },
         attemptSignIn: function(email, password, callback) {
             let errors = accountValidator.getErrorsEmailAndPassword(email, password)
 
@@ -15,9 +11,25 @@ module.exports = function({accountRepository}) {
                 callback(errors[0], null)
                 return
             }
-            accountRepository.attemptSignIn(email, password, callback)
+
+            accountRepository.getAccountByEmail(email, function(error, account) {
+                if (account) {
+                    bcrypt.compare(password, account.hashedPassword, (err, loginSuccess) => {
+                        if (err) {
+                            callback(err, null)
+                        }
+                        if (loginSuccess) {
+                            callback(null, {didSignIn: true, accId: account.id})
+                        } else {
+                            callback("PASSWORD IS INCORRECT", false)
+                        }
+                    })
+                } else {
+                    callback(error, false)
+                }
+            })
         },
-        attemptSignUp: function(email, password, callback) {
+        attemptSignUp: async function(email, password, callback) {
             let errors = accountValidator.getErrorsEmailAndPassword(email, password)
 
             if (errors.length > 0) {
@@ -25,7 +37,9 @@ module.exports = function({accountRepository}) {
                 return
             }
 
-            accountRepository.attemptSignUp(email, password, callback)
+            const hashedPassword = await bcrypt.hash(password, BCRYPT_SALT_LENGTH)
+            
+            accountRepository.createAccount(email, hashedPassword, callback)
         }
     }
 }
