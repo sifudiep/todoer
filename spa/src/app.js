@@ -74,7 +74,7 @@ window.addEventListener('DOMContentLoaded', (e) => {
     }
 
     async function addTodo(title, description) {
-        const url = "http://localhost:8000/rest/add-todo"
+        const url = "http://localhost:8000/rest/todo"
         const headers = new Headers()
         const token = sessionStorage.getItem("jwt")
         headers.append("content-type", "application/json")

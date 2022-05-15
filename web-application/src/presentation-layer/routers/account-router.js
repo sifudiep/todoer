@@ -76,8 +76,8 @@ module.exports = function ({ accountManager }) {
                 res.render("accounts-sign-up.hbs", {
                     successful: true,
                     csrfToken: req.csrfToken(),
-                    previousEmail: req.body.email,
-                    previousVerifyEmail: req.body.verifyEmail
+                    previousEmail: "",
+                    previousVerifyEmail: ""
                 })
                 return
             }

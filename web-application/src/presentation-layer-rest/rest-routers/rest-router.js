@@ -42,13 +42,13 @@ function authenticateToken(req, res, next) {
 module.exports = function ({ todoManager }) {
     const router = express.Router()
 
-    router.get("/todos", authenticateToken, (req, res) => {
+    router.get("/todo", authenticateToken, (req, res) => {
         todoManager.getAllTodos(req.user.accId, (err, result) => {
             res.status(200).json(result)
         })
     })
 
-    router.post("/add-todo", authenticateToken, (req, res) => {
+    router.post("/todo", authenticateToken, (req, res) => {
         todoManager.addTodo(req.body.title, req.body.description, req.user.accId, (err, result) => {
             if (err) {
                 res.status(409).send({errorMessage: err})
@@ -58,7 +58,6 @@ module.exports = function ({ todoManager }) {
         })
     })
 
-    
     router.delete("/todo", authenticateToken, (req, res) => {
         todoManager.deleteTodo(req.user.accId, req.body.title, (err, result) => {
             res.status(200).send()
