@@ -26,6 +26,7 @@ function authenticateToken(req, res, next) {
                 res.sendStatus(401)
                 return
             }
+            
             res.setHeader("WWW-Authenticate", "Bearer realm='localhost:8000',err='invalid_token', err_description='Access token is not a valid token.'")
             res.sendStatus(401)
             return
@@ -57,7 +58,8 @@ module.exports = function ({ todoManager }) {
         })
     })
 
-    router.post("/delete-todo", authenticateToken, (req, res) => {
+    
+    router.delete("/todo", authenticateToken, (req, res) => {
         todoManager.deleteTodo(req.user.accId, req.body.title, (err, result) => {
             res.status(200).send()
         })

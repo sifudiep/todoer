@@ -54,14 +54,14 @@ window.addEventListener('DOMContentLoaded', (e) => {
     }
 
     async function deleteTodo(title) {
-        const url = "http://localhost:8000/rest/delete-todo"
+        const url = "http://localhost:8000/rest/todo"
         const headers = new Headers()
         const token = sessionStorage.getItem("jwt")
         headers.append("content-type", "application/json")
         headers.append("authorization", `Bearer ${token}`)
 
         const response = await fetch(url, {
-            method: "POST",
+            method: "DELETE",
             headers: headers,
             body: JSON.stringify({
                 title
@@ -132,6 +132,7 @@ window.addEventListener('DOMContentLoaded', (e) => {
     }
 
     function attemptSignIn() {
+        console.log(`Trying to sign in...`);
         const url = `http://localhost:8000/rest/auth/sign-in?grant_type=password&username=${usernameInputElement.value}&password=${passwordInputElement.value}`
         fetch(url, {
             method: "POST"
