@@ -24,7 +24,6 @@ module.exports = function ({ todoManager }) {
             }
 
         })
-
     })
 
     router.post("/delete", global.userIsAuthorized, (req, res) => {

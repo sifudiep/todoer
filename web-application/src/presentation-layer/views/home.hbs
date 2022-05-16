@@ -1,8 +1,10 @@
 <div class="home">
     <p class="is-size-2 home-title">Today<span class="is-size-6"> {{date}}</span></p>
-    <button class="button is-warning home-add-todo js-modal-trigger" data-target="modal-add-todo">
-        <p class="is-size-4">+ Todo</p>
-    </button>
+    <a href="http://localhost:8000/add-todo" class="home-add-todo">
+        <button class="button is-warning">
+            <p class="is-size-4">+ Todo</p>
+        </button>
+    </a>
 </div>
 
 {{#if errorMessage}}
@@ -27,34 +29,3 @@
 </div>
 {{/each}}
 
-<div class="modal" id="modal-add-todo">
-    <div class="modal-background"></div>
-    <div class="modal-card">
-        <header class="modal-card-head">
-            <p class="modal-card-title">Add Todo!</p>
-            <button class="delete" aria-label="close"></button>
-        </header>
-        <section class="modal-card-body">
-            <form action="todo/add" method="POST">
-                <input type="hidden" name="_csrf" value="{{csrfToken}}">
-                <div class="field">
-                    <label class="label">Title</label>
-                    <div class="control">
-                        <input class="input" placeholder="Title" name="title" required="required" maxlength="50" value="{{previousTitle}}">
-                    </div>
-                </div>
-                <div class="field">
-                    <label class="label">Description</label>
-                    <div class="control">
-                        <input class="input" placeholder="Description" name="description" maxlength="100" value="{{previousDescription}}">
-                    </div>
-                </div>
-
-                <button class="button is-warning width-100" id="modal-add-todo-button">Add Todo</button>
-            </form>
-        </section>
-
-    </div>
-</div>
-
-<script type="text/javascript" src="/js/home.js"></script>

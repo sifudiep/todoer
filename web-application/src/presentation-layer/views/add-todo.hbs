@@ -1,0 +1,25 @@
+<header class="modal-card-head">
+    <p class="modal-card-title">Add Todo!</p>
+    <button class="delete" aria-label="close"></button>
+</header>
+<section class="modal-card-body">
+    <form action="todo/add" method="POST">
+        <input type="hidden" name="_csrf" value="{{csrfToken}}">
+        <div class="field">
+            <label class="label">Title</label>
+            <div class="control">
+                <input class="input" placeholder="Title" name="title" required="required" maxlength="50"
+                    value="{{previousTitle}}">
+            </div>
+        </div>
+        <div class="field">
+            <label class="label">Description</label>
+            <div class="control">
+                <input class="input" placeholder="Description" name="description" maxlength="100"
+                    value="{{previousDescription}}">
+            </div>
+        </div>
+
+        <button class="button is-warning width-100" id="modal-add-todo-button">Add Todo</button>
+    </form>
+</section>

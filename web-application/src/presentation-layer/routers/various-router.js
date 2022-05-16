@@ -40,5 +40,9 @@ module.exports = function({todoManager}) {
         res.render("contact.hbs")
     })
 
+    router.get("/add-todo", (req, res) => {
+        res.render("add-todo.hbs", {csrfToken : req.csrfToken()})
+    })
+
     return router
 }
