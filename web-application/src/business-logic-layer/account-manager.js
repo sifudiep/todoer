@@ -5,10 +5,10 @@ const BCRYPT_SALT_LENGTH = 10
 module.exports = function({accountRepository}) {
     return {
         attemptSignIn: function(email, password, callback) {
-            let errors = accountValidator.getErrorsEmailAndPassword(email, password)
+            const validatorError = accountValidator.getErrorsEmailAndPassword(email, password)
 
-            if (errors.length > 0) {
-                callback(errors[0], null)
+            if (validatorError) {
+                callback(validatorError, null)
                 return
             }
 
@@ -29,11 +29,11 @@ module.exports = function({accountRepository}) {
                 }
             })
         },
-        attemptSignUp: async function(email, password, callback) {
-            let errors = accountValidator.getErrorsEmailAndPassword(email, password)
+        attemptSignUp: async function(email, verifyEmail, password, verifyPassword, callback) {
+            const validatorError = accountValidator.getErrorsEmailAndPassword(email, verifyEmail, password, verifyPassword)
 
-            if (errors.length > 0) {
-                callback(errors[0], null)
+            if (validatorError) {
+                callback(validatorError, null)
                 return
             }
 

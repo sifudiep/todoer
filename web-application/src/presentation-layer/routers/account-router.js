@@ -1,5 +1,4 @@
 const express = require('express')
-const ERROR_DUPLICATE_EMAIL = "ER_DUP_ENTRY";
 
 module.exports = function ({ accountManager }) {
     const router = express.Router()
@@ -31,39 +30,8 @@ module.exports = function ({ accountManager }) {
     })
 
     router.post("/sign-up", (req, res) => {
-        if (req.body.email != req.body.verifyEmail) {
-            res.render("accounts-sign-up.hbs",
-                {
-                    errorMessage: "Email and Verify Email does not match",
-                    csrfToken: req.csrfToken(),
-                    previousEmail: req.body.email,
-                    previousVerifyEmail: req.body.verifyEmail
-                })
-            return
-        }
-
-        if (req.body.password != req.body.verifyPassword) {
-            res.render("accounts-sign-up.hbs", {
-                errorMessage: "Password and Verify Password does not match",
-                csrfToken: req.csrfToken(),
-                previousEmail: req.body.email,
-                previousVerifyEmail: req.body.verifyEmail
-            })
-            return
-        }
-
-        accountManager.attemptSignUp(req.body.email, req.body.password, (err, result) => {
+        accountManager.attemptSignUp(req.body.email, req.body.verifyEmail, req.body.password, req.body.verifyPassword, (err, signUpSuccessful) => {
             if (err) {
-                if (err.code == ERROR_DUPLICATE_EMAIL) {
-                    res.render("accounts-sign-up.hbs", {
-                        errorMessage: "Email is already registered.",
-                        csrfToken: req.csrfToken(),
-                        previousEmail: req.body.email,
-                        previousVerifyEmail: req.body.verifyEmail
-                    })
-                    return
-                }
-
                 res.render("accounts-sign-up.hbs", {
                     errorMessage: err,
                     csrfToken: req.csrfToken(),
@@ -72,14 +40,11 @@ module.exports = function ({ accountManager }) {
                 })
             }
 
-            if (result) {
+            if (signUpSuccessful) {
                 res.render("accounts-sign-up.hbs", {
                     successful: true,
-                    csrfToken: req.csrfToken(),
-                    previousEmail: "",
-                    previousVerifyEmail: ""
+                    csrfToken: req.csrfToken()
                 })
-                return
             }
         })
     })
