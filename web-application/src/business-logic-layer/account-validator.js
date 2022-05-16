@@ -4,7 +4,7 @@ const MIN_EMAIL_LENGTH = 8
 const MAX_PASSWORD_LENGTH = 50
 const MIN_PASSWORD_LENGTH = 5
 
-exports.getErrorsEmailAndPassword = function(email, verifyEmail, password, verifyPassword){
+exports.getErrorEmailAndPassword = function(email, verifyEmail, password, verifyPassword){
 	if (email.length == 0) {
         return "Email is empty..."
     } else if (email.length > MAX_EMAIL_LENGTH) {
@@ -17,9 +17,9 @@ exports.getErrorsEmailAndPassword = function(email, verifyEmail, password, verif
         return "Password is empty..."
     } else if (password.length < MIN_PASSWORD_LENGTH) {
         return "Password is too short..."
-    } else if (email != verifyEmail) {
+    } else if (email != verifyEmail && verifyEmail) {
         return "Email and Verify Email does not match..."
-    } else if (password != verifyPassword) {
+    } else if (password != verifyPassword && verifyPassword) {
         return "Password and Verify Password does not match..."
     }
 }

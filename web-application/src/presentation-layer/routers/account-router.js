@@ -10,18 +10,14 @@ module.exports = function ({ accountManager }) {
     router.post("/sign-in", (req, res) => {
         accountManager.attemptSignIn(req.body.email, req.body.password, (err, result) => {
             if (err) {
-                console.log(`ERR:`);
-                console.log(err)
+                res.render("accounts-sign-in.hbs", { errorMessage: err, csrfToken: req.csrfToken(), previousEmail: req.body.email })
             }
 
             if (result.didSignIn) {
                 req.session.isAuth = true
                 req.session.accId = result.accId
                 res.render("home.hbs", { csrfToken: req.csrfToken() })
-                return
             }
-
-            res.render("accounts-sign-in.hbs", { errorMessage: "Incorrect email or password...", csrfToken: req.csrfToken(), previousEmail: req.body.email })
         })
     })
 
