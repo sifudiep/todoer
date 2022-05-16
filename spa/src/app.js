@@ -32,9 +32,9 @@ window.addEventListener('DOMContentLoaded', (e) => {
     let todos = []
 
     async function fetchTodos () {
-        const url = "http://localhost:8000/rest/todos"
+        const url = "http://localhost:8000/rest/todo"
         const headers = new Headers()
-        const token = sessionStorage.getItem("jwt")
+        const token = sessionStorage.getItem("accessToken")
         headers.append("content-type", "application/json")
         headers.append("authorization", `Bearer ${token}`)
 
@@ -56,7 +56,7 @@ window.addEventListener('DOMContentLoaded', (e) => {
     async function deleteTodo(title) {
         const url = "http://localhost:8000/rest/todo"
         const headers = new Headers()
-        const token = sessionStorage.getItem("jwt")
+        const token = sessionStorage.getItem("accessToken")
         headers.append("content-type", "application/json")
         headers.append("authorization", `Bearer ${token}`)
 
@@ -76,7 +76,7 @@ window.addEventListener('DOMContentLoaded', (e) => {
     async function addTodo(title, description) {
         const url = "http://localhost:8000/rest/todo"
         const headers = new Headers()
-        const token = sessionStorage.getItem("jwt")
+        const token = sessionStorage.getItem("accessToken")
         headers.append("content-type", "application/json")
         headers.append("authorization", `Bearer ${token}`)
 
@@ -133,18 +133,29 @@ window.addEventListener('DOMContentLoaded', (e) => {
 
     function attemptSignIn() {
         console.log(`Trying to sign in...`);
-        const url = `http://localhost:8000/rest/auth/sign-in?grant_type=password&username=${usernameInputElement.value}&password=${passwordInputElement.value}`
+        const url = `http://localhost:8000/rest/auth/token`
+        const headers = new Headers()
+        headers.append("content-type", "application/json")
+
         fetch(url, {
-            method: "POST"
+            method: "POST",
+            headers : headers,
+            body: JSON.stringify({
+                username : usernameInputElement.value,
+                password : passwordInputElement.value,
+                grant_type : "password"
+            }) 
         })
             .then(res => res.json())
             .then(data => {
                 if (data.err) {
+                    console.log(`ERROR : ${data.err}`);
                     generateSignInErrorMessage(data.err)
                 }
 
-                if (data.jwt) {
-                    sessionStorage.setItem("jwt", data.jwt)
+                if (data.accessToken && data.idToken) {
+                    sessionStorage.setItem("accessToken", data.accessToken)
+                    sessionStorage.setItem("idToken", data.idToken)
                     generateTodoPage()
                 }
             })

@@ -1,4 +1,3 @@
-const { response } = require('express')
 const express = require('express')
 const jwt = require("jsonwebtoken")
 const global = require("../../global")
@@ -9,25 +8,36 @@ module.exports = function ({ accountManager }) {
     const router = express.Router()
 
 
-    router.post("/sign-in", (req, res) => {
+    router.post("/token", (req, res) => {
         // TODO Store PRIVATE_KEY in a more secure way.
-        accountManager.attemptSignIn(req.query.username, req.query.password, (err, account) => {
+        accountManager.attemptSignIn(req.body.username, req.body.password, (err, account) => {
             if (err) {
                 res.status(401).json({ err: err })
             }
             if (account) {
                 const PRIVATE_KEY = global.JWTSecretKey
-                let payload = {
+
+                const accessTokenPayload = {
                     accId: account.accId,
-                    email: account.email    
+                    email: account.email,
+                    grant_type: req.body.grant_type
                 }
 
-                jwt.sign(payload, PRIVATE_KEY, { expiresIn: JWT_EXPIRATION_TIME }, (err, token) => {
-                    let result = {
-                        jwt: token
-                    }
+                const idTokenPayload = {
+                    iss: "http://localhost:8080",
+                    sub: account.email,
+                    aud: "http://localhost:80",
+                    iat: new Date().getTime() / 1000,
+                }
 
-                    res.send(JSON.stringify(result))
+                jwt.sign(accessTokenPayload, PRIVATE_KEY, { expiresIn: JWT_EXPIRATION_TIME }, (err, accessToken) => {
+                    jwt.sign(idTokenPayload, PRIVATE_KEY, { expiresIn: JWT_EXPIRATION_TIME }, (err, idToken) => {
+                        const result = {
+                            accessToken,
+                            idToken
+                        }
+                        res.send(JSON.stringify(result))
+                    })
                 })
             }
         })

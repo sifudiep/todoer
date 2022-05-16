@@ -2,7 +2,7 @@
 CREATE TABLE accounts (
 	id int(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 	email VARCHAR(50) NOT NULL,
-	hashedPassword VARCHAR(80) NOT NULL,
+	hashedPassword VARCHAR(100) NOT NULL,
 	CONSTRAINT emailUnique UNIQUE (email)
 );
 

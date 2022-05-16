@@ -11,8 +11,6 @@ function authenticateToken(req, res, next) {
     // Checks if authHeader exists, if it exists token receives the value from the .split function
     const token = authHeader && authHeader.split(" ")[1]
 
-    console.log(`TOKEN : ${token}`);
-
     if (token == null) {
         res.setHeader("WWW-Authenticate", "Bearer realm='localhost:8000'")
         res.sendStatus(401)
