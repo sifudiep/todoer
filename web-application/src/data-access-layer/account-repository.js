@@ -1,7 +1,5 @@
 const db = require('./db')
-
-const ERROR_DUPLICATE_EMAIL = "ER_DUP_ENTRY";
-const ERROR_TIMEOUT = "ETIMEDOUT"
+const global = require("../global")
 
 module.exports = function({}) {
     return {
@@ -11,7 +9,7 @@ module.exports = function({}) {
             
             db.query(query, values, function(err, accounts) {
                 if(err){                    
-                    if (err.code == ERROR_TIMEOUT) {
+                    if (err.code == global.ERROR_TIMEOUT) {
                         callback("Communication with database was unsuccessful, please try again later", null)  
                     }
                 } else{
@@ -29,9 +27,9 @@ module.exports = function({}) {
 
             db.query(query, values, function(err) {
                 if (err) {
-                    if (err == ERROR_DUPLICATE_EMAIL) {
+                    if (err.code == global.ERROR_DUPLICATE) {
                         callback("Email is already registered, please use a different email.", false)
-                    } else if (err.code == ERROR_TIMEOUT) {
+                    } else if (err.code == global.ERROR_TIMEOUT) {
                         callback("Communication with database was unsuccessful, please try again later", false)  
                     } 
                 } else {

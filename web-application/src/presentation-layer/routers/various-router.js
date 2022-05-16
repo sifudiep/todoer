@@ -1,8 +1,6 @@
 const express = require('express')
-const { homePageErrorState } = require('../../global.js')
 
 const currentDate = new Date()
-
 const global = require("../../global.js")
 
 
@@ -11,24 +9,11 @@ module.exports = function({todoManager}) {
 
     router.get("/", global.userIsAuthorized, (req, res) => {
         todoManager.getAllTodos(req.session.accId, (err, todos) => {
-            if (global.homePageErrorState.errorHasOccurred) {
-                res.render("home.hbs", {
-                    todos,
-                    date: ` ${currentDate.toLocaleString('en-US', { weekday: 'short', day: 'numeric', month: "short"})}`,
-                    csrfToken : req.csrfToken(),
-                    errorMessage: homePageErrorState.errorMessage,
-                    previousTitle: homePageErrorState.previousTitle,
-                    previousDescription: homePageErrorState.previousDescription
-                })
-                
-                global.homePageErrorState.errorHasOccurred = false
-            } else {
-                res.render("home.hbs", {
-                    todos,
-                    date: ` ${currentDate.toLocaleString('en-US', { weekday: 'short', day: 'numeric', month: "short"})}`,
-                    csrfToken : req.csrfToken()
-                })
-            }
+            res.render("home.hbs", {
+                todos,
+                date: ` ${currentDate.toLocaleString('en-US', { weekday: 'short', day: 'numeric', month: "short"})}`,
+                csrfToken : req.csrfToken()
+            })
         })
     })
     
@@ -40,9 +25,7 @@ module.exports = function({todoManager}) {
         res.render("contact.hbs")
     })
 
-    router.get("/add-todo", (req, res) => {
-        res.render("add-todo.hbs", {csrfToken : req.csrfToken()})
-    })
+
 
     return router
 }

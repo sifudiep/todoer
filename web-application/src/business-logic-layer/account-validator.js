@@ -17,9 +17,9 @@ exports.getErrorEmailAndPassword = function(email, verifyEmail, password, verify
         return "Password is empty..."
     } else if (password.length < MIN_PASSWORD_LENGTH) {
         return "Password is too short..."
-    } else if (email != verifyEmail && verifyEmail) {
+    } else if (verifyEmail && email.toLowerCase() != verifyEmail.toLowerCase()) {
         return "Email and Verify Email does not match..."
-    } else if (password != verifyPassword && verifyPassword) {
+    } else if (verifyPassword && password.toLowerCase() != verifyPassword.toLowerCase()) {
         return "Password and Verify Password does not match..."
     }
 }

@@ -1,4 +1,5 @@
 const db = require('./db')
+const global = require(".././global")
 
 module.exports = function({}) {
     return {
@@ -9,9 +10,21 @@ module.exports = function({}) {
         
             db.query(query, values, function(err, res){
                 if(err){
-                    callback(err, null)
+                    if (err = global.ERROR_DUPLICATE) {
+                        callback("Todo task with same title already exists, please remove earlier Todo or use a different title.", {
+                            previousTitle : title, 
+                            previousDescription : description
+                        })
+                    }
+
+                    if (err.code == global.ERROR_TIMEOUT) {
+                        callback("Communication with database was unsuccessful, please try again later", {
+                            previousTitle : title, 
+                            previousDescription : description
+                        })  
+                    }
                 } else {
-                    callback("ERROR - Could not add Todo!", res)
+                    callback(null, res)
                 }
             })
         },

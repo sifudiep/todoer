@@ -1,9 +1,24 @@
+{{#if successful}}
+<article class="message is-success">
+    <div class="message-body">
+        <p>Task was successfully added!</p>
+    </div>
+</article>
+{{/if}}
+
+{{#if errorMessage}}
+<article class="message is-danger">
+    <div class="message-body">
+        <p>{{errorMessage}}</p>
+    </div>
+</article>
+{{/if}}
 <header class="modal-card-head">
     <p class="modal-card-title">Add Todo!</p>
-    <button class="delete" aria-label="close"></button>
 </header>
+
 <section class="modal-card-body">
-    <form action="todo/add" method="POST">
+    <form action="add-todo" method="POST">
         <input type="hidden" name="_csrf" value="{{csrfToken}}">
         <div class="field">
             <label class="label">Title</label>

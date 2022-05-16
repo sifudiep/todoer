@@ -3,10 +3,10 @@ const todoValidator = require("./todo-validator")
 module.exports = function({todoRepository}) {
     return {
         addTodo: function(title, description, accId, callback) {
-            let errors = todoValidator.getErrorsTodo(title, description)
+            let error = todoValidator.getErrorTodo(title, description)
             
-            if (errors.length > 0) {
-                callback(errors[0], null)
+            if (error) {
+                callback(errors, null)
                 return
             }
 

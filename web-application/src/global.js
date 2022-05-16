@@ -14,11 +14,7 @@ module.exports = {
         }
         next()
     },
-    homePageErrorState: {
-        errorHasOccurred: false,
-        errorMessage: "",
-        previousTitle: "",
-        previousDescription: ""
-    },
-    JWTSecretKey: "HejHej123"
+    JWTSecretKey: "HejHej123",
+    ERROR_DUPLICATE : "ER_DUP_ENTRY",
+    ERROR_TIMEOUT : "ETIMEDOUT",
 }

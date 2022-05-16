@@ -3,18 +3,14 @@ const MIN_TITLE_LENGTH = 2
 
 const MAX_DESCRIPTION_LENGTH = 100
 
-exports.getErrorsTodo = function(title, description){
-	const errors = []
-	
+exports.getErrorTodo = function(title, description){	
     if (title.length == 0) {
-        errors.push("titleIsMissing")
+        return "Title is missing..."
     } else if (title.length > MAX_TITLE_LENGTH) {
-        errors.push("titleTooLong")
+        return "Title is too long..."
     } else if (title.length < MIN_TITLE_LENGTH) {
-        errors.push("titleTooShort")
+        return "Title is too short..."
     } else if (description.length > MAX_DESCRIPTION_LENGTH) {
-        errors.push("descriptionTooLong")
+        return "Description is too long..."
     }
-
-	return errors
 }
