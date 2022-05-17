@@ -14,3 +14,11 @@ exports.getErrorTodo = function(title, description){
         return "Description is too long..."
     }
 }
+
+exports.userIsAuthorized = function (session) {
+    if (!session || !session.isAuth) {
+        return false
+    }
+
+    return true
+}

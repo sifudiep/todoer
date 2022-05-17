@@ -7,10 +7,12 @@ window.addEventListener('DOMContentLoaded', (e) => {
 
     const ERR_DUPLICATE_ENTRY = "ER_DUP_ENTRY"
     const HTTP_CODE_OK = 200
+    const todoUrl = "http://localhost:8000/rest/todo"
+    const authUrl = "http://localhost:8000/rest/auth/token"
 
-    let main = document.querySelector("main")
-    let todosPageButton = document.querySelector("#todosPageButton")
-    let signInPageButton = document.querySelector("#signInPageButton")
+    const main = document.querySelector("main")
+    const todosPageButton = document.querySelector("#todosPageButton")
+    const signInPageButton = document.querySelector("#signInPageButton")
     
     let usernameInputElement = null
     let passwordInputElement = null
@@ -32,13 +34,12 @@ window.addEventListener('DOMContentLoaded', (e) => {
     let todos = []
 
     async function fetchTodos () {
-        const url = "http://localhost:8000/rest/todo"
         const headers = new Headers()
         const token = sessionStorage.getItem("accessToken")
         headers.append("content-type", "application/json")
         headers.append("authorization", `Bearer ${token}`)
 
-        const response = await fetch(url, {
+        const response = await fetch(todoUrl, {
             method: "GET",
             headers: headers
         })
@@ -54,13 +55,12 @@ window.addEventListener('DOMContentLoaded', (e) => {
     }
 
     async function deleteTodo(title) {
-        const url = "http://localhost:8000/rest/todo"
         const headers = new Headers()
         const token = sessionStorage.getItem("accessToken")
         headers.append("content-type", "application/json")
         headers.append("authorization", `Bearer ${token}`)
 
-        const response = await fetch(url, {
+        const response = await fetch(todoUrl, {
             method: "DELETE",
             headers: headers,
             body: JSON.stringify({
@@ -74,13 +74,12 @@ window.addEventListener('DOMContentLoaded', (e) => {
     }
 
     async function addTodo(title, description) {
-        const url = "http://localhost:8000/rest/todo"
         const headers = new Headers()
         const token = sessionStorage.getItem("accessToken")
         headers.append("content-type", "application/json")
         headers.append("authorization", `Bearer ${token}`)
 
-        const response = await fetch(url, {
+        const response = await fetch(todoUrl, {
             method: "POST",
             headers: headers,
             body: JSON.stringify({
@@ -132,12 +131,10 @@ window.addEventListener('DOMContentLoaded', (e) => {
     }
 
     function attemptSignIn() {
-        console.log(`Trying to sign in...`);
-        const url = `http://localhost:8000/rest/auth/token`
         const headers = new Headers()
         headers.append("content-type", "application/json")
 
-        fetch(url, {
+        fetch(authUrl, {
             method: "POST",
             headers : headers,
             body: JSON.stringify({
