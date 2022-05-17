@@ -54,7 +54,7 @@ window.addEventListener('DOMContentLoaded', (e) => {
         }
     }
 
-    async function deleteTodo(title) {
+    async function deleteTodo(id) {
         const headers = new Headers()
         const token = sessionStorage.getItem("accessToken")
         headers.append("content-type", "application/json")
@@ -64,7 +64,7 @@ window.addEventListener('DOMContentLoaded', (e) => {
             method: "DELETE",
             headers: headers,
             body: JSON.stringify({
-                title
+                id
             })
         })
 
@@ -146,7 +146,6 @@ window.addEventListener('DOMContentLoaded', (e) => {
             .then(res => res.json())
             .then(data => {
                 if (data.err) {
-                    console.log(`ERROR : ${data.err}`);
                     generateSignInErrorMessage(data.err)
                 }
 
@@ -393,6 +392,8 @@ window.addEventListener('DOMContentLoaded', (e) => {
 
     async function updateTodosView() {
         todos = await fetchTodos()
+        if (!todos) return
+
         const divContainer = document.querySelector("div.box")
 
         if (divContainer) {
@@ -418,7 +419,7 @@ window.addEventListener('DOMContentLoaded', (e) => {
             doneButton.className = "button is-success is-light todo-done"
             doneButton.textContent = "Done"
             doneButton.addEventListener("click", (e) => {
-                deleteTodo(todoItemTitle.textContent)
+                deleteTodo(todos[i].id)
             })
 
             todoItem.appendChild(todoItemTitle)

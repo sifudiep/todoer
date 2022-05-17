@@ -23,20 +23,22 @@ function authenticateToken(req, res, next) {
             if (err.name == TOKEN_EXPIRED_ERROR) {
                 res.setHeader(`WWW-Authenticate`, `Bearer realm='${global.DesktopSiteURL}',err='invalid_token', err_description='The access token expired'`)
                 res.sendStatus(401)
-                next()
-                return
+            } else {
+                res.setHeader(`WWW-Authenticate`, `Bearer realm='${global.DesktopSiteURL}',err='invalid_token', err_description='Access token is not a valid token.'`)
+                res.sendStatus(401)
             }
-            
-            res.setHeader(`WWW-Authenticate`, `Bearer realm='${global.DesktopSiteURL}',err='invalid_token', err_description='Access token is not a valid token.'`)
-            res.sendStatus(401)
-            next()
-            return
+
         }
         if (user) {
-            req.user = user
-            next()
-            return
+            req.session = {
+                isAuth : true,
+                accountId : user.accountId,
+                user
+            }
         }
+
+        next()
+        return
     })
 }
 
@@ -44,24 +46,32 @@ module.exports = function ({ todoManager }) {
     const router = express.Router()
 
     router.get("/todo", authenticateToken, (req, res) => {
-        todoManager.getAllTodos(req.user.accountId, (err, result) => {
-            res.status(200).json(result)
+        todoManager.getAllTodos(req.session, (err, result) => {
+            if (err) {
+                res.status(err.code).send({errorMessage: err.message})
+            } else {
+                res.status(200).json(result)
+            }
         })
     })
 
     router.post("/todo", authenticateToken, (req, res) => {
-        todoManager.addTodo(req.body.title, req.body.description, req.user.accountId, (err, result) => {
+        todoManager.addTodo(req.body.title, req.body.description, req.session, (err, result) => {
             if (err) {
-                res.status(409).send({errorMessage: err})
+                res.status(err.code).send({errorMessage: err.message})
+            } else {
+                res.status(200).send()
             }
-
-            res.status(200).send()
         })
     })
 
     router.delete("/todo", authenticateToken, (req, res) => {
-        todoManager.deleteTodo(req.user.accountId, req.body.title, (err, result) => {
-            res.status(200).send()
+        todoManager.deleteTodo(req.body.id, req.session, (err) => {
+            if (err) {
+                res.status(err.code).send({errorMessage: err.message})
+            } else {
+                res.status(200).send()
+            }
         })
     })
 

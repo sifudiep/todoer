@@ -27,7 +27,7 @@ module.exports = function ({ todoManager }) {
     })
 
     router.post("/delete/:id", (req, res) => {
-        todoManager.deleteTodo(req.session, req.params.id, (err) => {
+        todoManager.deleteTodo(req.params.id, req.session, (err) => {
             if (err) {
                 res.render("home.hbs", {
                     errorMessage : err

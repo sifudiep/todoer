@@ -10,13 +10,13 @@ module.exports = function({}) {
             db.query(query, values, function(err, accounts) {
                 if(err){                    
                     if (err.code == global.ERROR_TIMEOUT) {
-                        callback("Communication with database was unsuccessful, please try again later", null)  
+                        callback({code : 503, message : "Communication with database was unsuccessful, please try again later"}, null)  
                     }
                 } else{
                     if (accounts != null && accounts.length > 0) {
                         callback(null, accounts[0])
                     } else {
-                        callback("Email is not registered on Todoer...", null)
+                        callback({code : 404, message : "Email is not registered on Todoer..."}, null)
                     }
                 }
             })
@@ -28,9 +28,9 @@ module.exports = function({}) {
             db.query(query, values, function(err) {
                 if (err) {
                     if (err.code == global.ERROR_DUPLICATE) {
-                        callback("Email is already registered, please use a different email.", false)
+                        callback({code : 400, message : "Email is already registered on Todoer, please sign up using a different email."}, false)
                     } else if (err.code == global.ERROR_TIMEOUT) {
-                        callback("Communication with database was unsuccessful, please try again later", false)  
+                        callback({code : 503, message : "Communication with database was unsuccessful, please try again later"}, false)  
                     } 
                 } else {
                     callback(null, true)

@@ -31,11 +31,11 @@ module.exports = function({todoRepository}) {
                 callback("ERROR 401 - Please login to view Todo tasks.", null)
             }
         },
-        deleteTodo: function(session, id, title, callback) {
+        deleteTodo: function(id, session, callback) {
             const userIsAuthorized = todoAuthorizer.userIsAuthorized(session)
-
+            
             if (userIsAuthorized) {
-                todoRepository.deleteTodo(id, session.accountId, title, callback)
+                todoRepository.deleteTodo(id, session.accountId, callback)
             } else {
                 callback("ERROR 401 - User is not authorized to make this request...")                
             }

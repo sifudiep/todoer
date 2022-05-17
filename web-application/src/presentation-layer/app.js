@@ -11,29 +11,7 @@ const csrf = require("csurf")
 const csrfProtection = csrf()
 
 const Redis = require("ioredis");
-const awilix = require("awilix");
-
-const accountRepository = require("../data-access-layer/account-repository")
-const accountManager = require("../business-logic-layer/account-manager")
-const todoRepository = require("../data-access-layer/todo-repository")
-const todoManager = require("../business-logic-layer/todo-manager")
-const accountRouter = require("./routers/account-router")
-const variousRouter = require("./routers/various-router")
-const todoRouter = require("./routers/todo-router")
-
-const container = awilix.createContainer()
-
-container.register("accountRepository", awilix.asFunction(accountRepository))
-container.register("accountManager", awilix.asFunction(accountManager))
-container.register("todoRepository", awilix.asFunction(todoRepository))
-container.register("todoManager", awilix.asFunction(todoManager))
-container.register("accountRouter", awilix.asFunction(accountRouter))
-container.register("variousRouter", awilix.asFunction(variousRouter))
-container.register("todoRouter", awilix.asFunction(todoRouter))
-
-const theAccountRouter = container.resolve("accountRouter")
-const theVariousRouter = container.resolve("variousRouter")
-const theTodoRouter = container.resolve("todoRouter")
+const awilixRoutes = require("../awilixRoutes")
 
 const app = express()
 
@@ -74,9 +52,9 @@ app.set("views", path.join(__dirname, "views"))
 app.use(express.static(path.join(__dirname, "public")))
 
 // Attach all routers.
-app.use("/", theVariousRouter)
-app.use("/accounts", theAccountRouter)
-app.use("/todo", theTodoRouter)
+app.use("/", awilixRoutes.theVariousRouter)
+app.use("/accounts", awilixRoutes.theAccountRouter)
+app.use("/todo", awilixRoutes.theTodoRouter)
 
 
 module.exports = app
