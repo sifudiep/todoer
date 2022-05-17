@@ -8,7 +8,7 @@ module.exports = function ({ todoManager }) {
         res.render("add-todo.hbs", {csrfToken : req.csrfToken()})
     })
 
-    router.post("/add-todo", global.userIsAuthorized, (req, res) => {
+    router.post("/add-todo", (req, res) => {
         todoManager.addTodo(req.body.title, req.body.description, req.session.accId, (err, result) => {
             if (err) {
                 res.render("add-todo.hbs", {
@@ -26,9 +26,14 @@ module.exports = function ({ todoManager }) {
         })
     })
 
-    router.post("/delete", global.userIsAuthorized, (req, res) => {
-        todoManager.deleteTodo(req.session.accId, req.body.title, (err, result) => {
-            res.render("home.hbs")
+    router.post("/delete/:id", (req, res) => {
+        todoManager.deleteTodo(req.params.id, (err) => {
+            if (err) {
+                res.render("home.hbs", {
+                    errorMessage : err
+                })
+            }
+            res.redirect(global.DesktopSiteURL)
         })
     })
 

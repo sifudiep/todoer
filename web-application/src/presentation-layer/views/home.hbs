@@ -1,6 +1,6 @@
 <div class="home">
     <p class="is-size-2 home-title">Today<span class="is-size-6"> {{date}}</span></p>
-    <a href="todo/add-todo" class="home-add-todo">
+    <a href="http://localhost:8000/todo/add-todo" class="home-add-todo">
         <button class="button is-warning">
             <p class="is-size-4">+ Todo</p>
         </button>
@@ -20,9 +20,10 @@
     <div class="todo-item">
         <p class="is-size-4 todo-title">{{this.title}}</p>
         <p class="is-size-7 todo-description">{{this.description}}</p>
-        <form action="todo/delete" method="POST" class="justify-self-end">
+
+        <form action="todo/delete/{{this.id}}" method="POST" class="justify-self-end">
             <input type="hidden" name="_csrf" value="{{@root.csrfToken}}">
-            <input type="hidden" value="{{this.title}}" name="title">
+            <input type="hidden" name="id" value="{{this.id}}">
             <button class="button is-success is-light todo-done">Done</button>
         </form>
     </div>

@@ -10,10 +10,10 @@ CREATE TABLE todos (
     id int(10) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     title varchar(50) NOT NULL,
     description varchar(100) DEFAULT NULL,
-    accId int(10) UNSIGNED NOT NULL,
-    CONSTRAINT UC_todos UNIQUE (accId, title),
+    accountId int(10) UNSIGNED NOT NULL,
+    CONSTRAINT UC_todos UNIQUE (accountId, title),
     CONSTRAINT `FK_accountsTodos` 
-        FOREIGN KEY (accId)
+        FOREIGN KEY (accountId)
         REFERENCES accounts(id)
         ON DELETE CASCADE
 );

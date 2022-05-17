@@ -3,15 +3,15 @@ const global = require(".././global")
 
 module.exports = function({}) {
     return {
-        addTodo: function(title, description, accId, callback) {
-            const query = `INSERT INTO todos (title, description, accId) VALUES (?, ?, ?)`
+        addTodo: function(title, description, accountId, callback) {
+            const query = `INSERT INTO todos (title, description, accountId) VALUES (?, ?, ?)`
         
-            const values = [title, description, accId]
+            const values = [title, description, accountId]
         
-            db.query(query, values, function(err, res){
+            db.query(query, values, function(err){
                 if(err){
-                    if (err = global.ERROR_DUPLICATE) {
-                        callback("Todo task with same title already exists, please remove earlier Todo or use a different title.", {
+                    if (err == global.ERROR_DUPLICATE) {
+                        callback("Todo task with same title already exists, please remove the Todo task with identical title or use a different title.", {
                             previousTitle : title, 
                             previousDescription : description
                         })
@@ -24,33 +24,39 @@ module.exports = function({}) {
                         })  
                     }
                 } else {
-                    callback(null, res)
+                    callback(null)
                 }
             })
         },
-        getAllTodos: function(accId, callback) {
-            const query = "SELECT * FROM todos WHERE accId = ?"
+        getAllTodos: function(accountId, callback) {
+            const query = "SELECT * FROM todos WHERE accountId = ?"
         
-            const values = [accId]
+            const values = [accountId]
         
-            db.query(query, values, function(err, res){
+            db.query(query, values, function(err, todos){
                 if(err){
-                    callback("ERROR - Could not retrieve all Todos!", null)
+                    if (err.code == global.ERROR_TIMEOUT) {
+                        callback("Communication with database was unsuccessful, please try again later", null)
+                    } else {
+                        callback("Todos could not be retrieved...", null)
+                    }
                 } else {
-                    callback(null, res)
+                    callback(null, todos)
                 }
             })
         },
-        deleteTodo: function(accId, title, callback) {
-            const query = "DELETE FROM todos WHERE accId = ? AND title = ?"
+        deleteTodo: function(id, callback) {
+            const query = "DELETE FROM todos WHERE id = ?"
 
-            const values = [accId, title]
-
-            db.query(query, values, function(err, res) {
+            const values = [id]
+            
+            db.query(query, values, function(err) {
                 if (err) {
-                    callback("ERROR - Could not delete Todo!", null)
+                    if (err.code == global.ERROR_TIMEOUT) {
+                        callback("Communication with database was unsuccessful, please try again later")  
+                    }
                 } else {
-                    callback(null, res)
+                    callback(null)
                 }
             })
         }

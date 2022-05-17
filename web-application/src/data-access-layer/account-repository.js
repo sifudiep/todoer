@@ -13,7 +13,7 @@ module.exports = function({}) {
                         callback("Communication with database was unsuccessful, please try again later", null)  
                     }
                 } else{
-                    if (accounts.length > 0) {
+                    if (accounts != null && accounts.length > 0) {
                         callback(null, accounts[0])
                     } else {
                         callback("Email is not registered on Todoer...", null)
