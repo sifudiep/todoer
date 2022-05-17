@@ -8,7 +8,7 @@ module.exports = function({accountRepository}) {
             const validatorError = accountValidator.getErrorEmailAndPassword(email, null, password, null)
 
             if (validatorError) {
-                callback(validatorError, null)
+                callback({code : 400, message : validatorError}, null)
                 return
             }
 
@@ -22,7 +22,7 @@ module.exports = function({accountRepository}) {
                         if (loginSuccess) {
                             callback(null, {didSignIn: true, accountId: account.id})
                         } else {
-                            callback("Password was incorrect...", false)
+                            callback({code : 400, message : "Password was incorrect..."}, false)
                         }
                     })
                 } else {
@@ -34,7 +34,7 @@ module.exports = function({accountRepository}) {
             const validatorError = accountValidator.getErrorEmailAndPassword(email, verifyEmail, password, verifyPassword)
 
             if (validatorError) {
-                callback(validatorError, null)
+                callback({code : 400, message : validatorError}, null)
                 return
             }
 

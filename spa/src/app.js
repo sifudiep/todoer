@@ -446,7 +446,5 @@ window.addEventListener('DOMContentLoaded', (e) => {
             closeModal(modal);
         });
     }
-
-
 })
 

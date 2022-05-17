@@ -7,9 +7,7 @@ const JWT_EXPIRATION_TIME = 60 * 60 // 1 HOUR
 module.exports = function ({ accountManager }) {
     const router = express.Router()
 
-
     router.post("/token", (req, res) => {
-        // TODO Store PRIVATE_KEY in a more secure way.
         accountManager.attemptSignIn(req.body.username, req.body.password, (err, account) => {
             if (err) {
                 res.status(401).json({ err: err })
@@ -24,7 +22,7 @@ module.exports = function ({ accountManager }) {
                 }
 
                 const idTokenPayload = {
-                    iss: "http://localhost:8080",
+                    iss: "http://localhost:8000",
                     sub: account.email,
                     aud: "http://localhost:80",
                     iat: new Date().getTime() / 1000,

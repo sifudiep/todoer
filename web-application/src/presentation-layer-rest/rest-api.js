@@ -8,6 +8,8 @@ app.use(cors({
     origin: "http://localhost"
 }))
 
+app.use(express.json())
+
 app.use("/", awilixRoutes.theRestRouter)
 app.use("/auth", awilixRoutes.theAuthRouter)
 

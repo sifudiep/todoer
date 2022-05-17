@@ -9,9 +9,10 @@ module.exports = function({todoManager}) {
 
     router.get("/", (req, res) => {
         todoManager.getAllTodos(req.session, (err, todos) => {
+            console.log(err);
             res.render("home.hbs", {
                 todos,
-                errorMessage : err.message,
+                errorMessage : err ? err.message : null,
                 date: ` ${currentDate.toLocaleString('en-US', { weekday: 'short', day: 'numeric', month: "short"})}`,
                 csrfToken : req.csrfToken()
             })
