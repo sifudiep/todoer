@@ -11,7 +11,7 @@ module.exports = function ({ accountManager }) {
     router.post("/sign-in", (req, res) => {
         accountManager.attemptSignIn(req.body.email, req.body.password, (err, result) => {
             if (err) {
-                res.render("accounts-sign-in.hbs", { errorMessage: err, csrfToken: req.csrfToken(), previousEmail: req.body.email })
+                res.render("accounts-sign-in.hbs", { errorMessage: err.message, csrfToken: req.csrfToken(), previousEmail: req.body.email })
             }
 
             if (result.didSignIn) {
@@ -30,7 +30,7 @@ module.exports = function ({ accountManager }) {
         accountManager.attemptSignUp(req.body.email, req.body.verifyEmail, req.body.password, req.body.verifyPassword, (err, signUpSuccessful) => {
             if (err) {
                 res.render("accounts-sign-up.hbs", {
-                    errorMessage: err,
+                    errorMessage: err.message,
                     csrfToken: req.csrfToken(),
                     previousEmail: req.body.email,
                     previousVerifyEmail: req.body.verifyEmail

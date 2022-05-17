@@ -11,7 +11,7 @@ module.exports = function({todoManager}) {
         todoManager.getAllTodos(req.session, (err, todos) => {
             res.render("home.hbs", {
                 todos,
-                errorMessage : err,
+                errorMessage : err.message,
                 date: ` ${currentDate.toLocaleString('en-US', { weekday: 'short', day: 'numeric', month: "short"})}`,
                 csrfToken : req.csrfToken()
             })

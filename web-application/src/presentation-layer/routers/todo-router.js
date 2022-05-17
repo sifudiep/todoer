@@ -12,7 +12,7 @@ module.exports = function ({ todoManager }) {
         todoManager.addTodo(req.body.title, req.body.description, req.session, (err, result) => {
             if (err) {
                 res.render("add-todo.hbs", {
-                    errorMessage : err,
+                    errorMessage : err.message,
                     csrfToken : req.csrfToken(),
                     previousTitle : result.previousTitle,
                     previousDescription : result.previousDescription
@@ -30,7 +30,7 @@ module.exports = function ({ todoManager }) {
         todoManager.deleteTodo(req.params.id, req.session, (err) => {
             if (err) {
                 res.render("home.hbs", {
-                    errorMessage : err
+                    errorMessage : err.message
                 })
                 return
             }
