@@ -20,6 +20,8 @@ let RedisStore = require("connect-redis")(session)
 
 const ioredis = new Redis(REDIS_PORT, REDIS_SERVER_NAME); // uses defaults unless given configuration object
 
+app.use(express.json())
+
 // Adds body to req
 app.use(express.urlencoded({
     extended: false
