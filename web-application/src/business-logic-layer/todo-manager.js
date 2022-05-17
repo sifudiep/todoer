@@ -1,22 +1,44 @@
 const todoValidator = require("./todo-validator")
+const global = require("../global")
 
 module.exports = function({todoRepository}) {
     return {
-        addTodo: function(title, description, accId, callback) {
-            let error = todoValidator.getErrorTodo(title, description)
+        addTodo: function(title, description, session, callback) {
+            const validatorError = todoValidator.getErrorTodo(title, description)
             
-            if (error) {
-                callback(errors, null)
+            if (validatorError) {
+                callback(validatorError, null)
                 return
             }
+            
+            const userIsAuthorized = global.userIsAuthorized(session)
 
-            todoRepository.addTodo(title, description, accId, callback)
+            if (userIsAuthorized) {
+                todoRepository.addTodo(title, description, session.accountId, callback)
+            } else {
+                callback("ERROR 401 - User is not authorized to make this request...", {
+                    previousTitle : title,
+                    previousDescription : description
+                })
+            }
         },
-        getAllTodos: function(accId, callback) {
-            todoRepository.getAllTodos(accId, callback)
+        getAllTodos: function(session, callback) {
+            const userIsAuthorized = global.userIsAuthorized(session)
+
+            if (userIsAuthorized) {
+                todoRepository.getAllTodos(session.accountId, callback)
+            } else {
+                callback("ERROR 401 - Please login to view Todo tasks.", null)
+            }
         },
-        deleteTodo: function(accId, title, callback) {
-            todoRepository.deleteTodo(accId, title, callback)
+        deleteTodo: function(session, id, title, callback) {
+            const userIsAuthorized = global.userIsAuthorized(session)
+
+            if (userIsAuthorized) {
+                todoRepository.deleteTodo(id, session.accountId, title, callback)
+            } else {
+                callback("ERROR 401 - User is not authorized to make this request...")                
+            }
         }
     }
 }

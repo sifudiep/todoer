@@ -9,7 +9,7 @@ module.exports = function ({ todoManager }) {
     })
 
     router.post("/add-todo", (req, res) => {
-        todoManager.addTodo(req.body.title, req.body.description, req.session.accId, (err, result) => {
+        todoManager.addTodo(req.body.title, req.body.description, req.session, (err, result) => {
             if (err) {
                 res.render("add-todo.hbs", {
                     errorMessage : err,
@@ -27,11 +27,12 @@ module.exports = function ({ todoManager }) {
     })
 
     router.post("/delete/:id", (req, res) => {
-        todoManager.deleteTodo(req.params.id, (err) => {
+        todoManager.deleteTodo(req.session, req.params.id, (err) => {
             if (err) {
                 res.render("home.hbs", {
                     errorMessage : err
                 })
+                return
             }
             res.redirect(global.DesktopSiteURL)
         })

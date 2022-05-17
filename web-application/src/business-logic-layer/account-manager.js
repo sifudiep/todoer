@@ -20,7 +20,7 @@ module.exports = function({accountRepository}) {
                             return
                         }
                         if (loginSuccess) {
-                            callback(null, {didSignIn: true, accId: account.id})
+                            callback(null, {didSignIn: true, accountId: account.id})
                         } else {
                             callback("Password was incorrect...", false)
                         }

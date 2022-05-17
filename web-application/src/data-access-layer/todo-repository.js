@@ -45,10 +45,10 @@ module.exports = function({}) {
                 }
             })
         },
-        deleteTodo: function(id, callback) {
-            const query = "DELETE FROM todos WHERE id = ?"
+        deleteTodo: function(id, accountId, callback) {
+            const query = "DELETE FROM todos WHERE id = ? AND accountId = ?"
 
-            const values = [id]
+            const values = [id, accountId]
             
             db.query(query, values, function(err) {
                 if (err) {

@@ -1,4 +1,5 @@
 const express = require('express')
+const global = require("../../global")
 
 module.exports = function ({ accountManager }) {
     const router = express.Router()
@@ -15,8 +16,8 @@ module.exports = function ({ accountManager }) {
 
             if (result.didSignIn) {
                 req.session.isAuth = true
-                req.session.accId = result.accId
-                res.render("home.hbs", { csrfToken: req.csrfToken() })
+                req.session.accountId = result.accountId
+                res.redirect(global.DesktopSiteURL)
             }
         })
     })

@@ -7,10 +7,11 @@ const global = require("../../global.js")
 module.exports = function({todoManager}) {
     const router = express.Router()
 
-    router.get("/", global.userIsAuthorized, (req, res) => {
-        todoManager.getAllTodos(req.session.accId, (err, todos) => {
+    router.get("/", (req, res) => {
+        todoManager.getAllTodos(req.session, (err, todos) => {
             res.render("home.hbs", {
                 todos,
+                errorMessage : err,
                 date: ` ${currentDate.toLocaleString('en-US', { weekday: 'short', day: 'numeric', month: "short"})}`,
                 csrfToken : req.csrfToken()
             })

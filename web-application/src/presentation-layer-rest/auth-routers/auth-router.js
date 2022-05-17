@@ -18,7 +18,7 @@ module.exports = function ({ accountManager }) {
                 const PRIVATE_KEY = global.JWTSecretKey
 
                 const accessTokenPayload = {
-                    accId: account.accId,
+                    accountId: account.accountId,
                     email: account.email,
                     grant_type: req.body.grant_type
                 }
