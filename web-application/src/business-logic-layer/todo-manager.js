@@ -1,4 +1,5 @@
 const todoValidator = require("./todo-validator")
+const todoAuthorizer = require("./todo-authorizer")
 
 module.exports = function({todoRepository}) {
     return {
@@ -10,7 +11,7 @@ module.exports = function({todoRepository}) {
                 return
             }
             
-            const userIsAuthorized = todoValidator.userIsAuthorized(session)
+            const userIsAuthorized = todoAuthorizer.userIsAuthorized(session)
 
             if (userIsAuthorized) {
                 todoRepository.addTodo(title, description, session.accountId, callback)
@@ -22,7 +23,7 @@ module.exports = function({todoRepository}) {
             }
         },
         getAllTodos: function(session, callback) {
-            const userIsAuthorized = todoValidator.userIsAuthorized(session)
+            const userIsAuthorized = todoAuthorizer.userIsAuthorized(session)
 
             if (userIsAuthorized) {
                 todoRepository.getAllTodos(session.accountId, callback)
@@ -31,7 +32,7 @@ module.exports = function({todoRepository}) {
             }
         },
         deleteTodo: function(session, id, title, callback) {
-            const userIsAuthorized = todoValidator.userIsAuthorized(session)
+            const userIsAuthorized = todoAuthorizer.userIsAuthorized(session)
 
             if (userIsAuthorized) {
                 todoRepository.deleteTodo(id, session.accountId, title, callback)
